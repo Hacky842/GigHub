@@ -3,64 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackyNetworksStudio | Portal</title>
+    <title>HackyNetworksStudio | Core</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #07090e; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        body { 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            background: radial-gradient(circle at center, #0f172a, #020617); 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; overflow-x: hidden; color: #fff;
+        }
         
-        /* Split Background Container */
-        .container { display: flex; width: 100vw; height: 100vh; background: #0d1117; position: relative; }
+        /* Premium Split Box */
+        .master-card { 
+            display: flex; width: 100vw; height: 100vh; 
+            background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(10px);
+            position: relative; overflow: hidden;
+        }
         
-        /* Left Panel - The Form Section */
-        .left-side { flex: 1.2; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; position: relative; }
+        /* Creative Diagonal Overlay */
+        .master-card::before {
+            content: ''; position: absolute; top: 0; right: 0; 
+            width: 45%; height: 100%; 
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.15), rgba(0, 136, 204, 0.3));
+            clip-path: polygon(25% 0, 100% 0, 100% 100%, 0% 100%);
+            z-index: 1; pointer-events: none;
+        }
+
+        .left-panel { 
+            flex: 1.2; padding: 40px; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; z-index: 2; 
+        }
         
-        /* Right Panel - The Cool Aesthetic Banner */
-        .right-side { flex: 0.8; background: linear-gradient(135deg, #00ffcc, #0088cc); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #07090e; padding: 30px; text-align: center; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); }
+        .right-panel { 
+            flex: 0.8; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; z-index: 2;
+            padding: 40px; text-align: center;
+        }
         
-        .form-box { width: 100%; max-width: 340px; }
-        h2 { font-size: 28px; color: #fff; margin-bottom: 25px; font-weight: 600; letter-spacing: 1px; }
+        .form-container { width: 100%; max-width: 360px; }
         
-        .input-group { position: relative; margin-bottom: 20px; width: 100%; }
-        .input-group input { width: 100%; padding: 10px 0; background: none; border: none; border-bottom: 1px solid #333; color: #fff; font-size: 14px; transition: 0.3s; }
-        .input-group input:focus { outline: none; border-bottom-color: #00ffcc; }
+        .brand-title {
+            font-size: 32px; font-weight: 800; background: linear-gradient(90deg, #00ffcc, #0088cc);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .brand-subtitle { font-size: 11px; color: #64748b; letter-spacing: 3px; margin-bottom: 35px; }
+
+        h3 { font-size: 20px; font-weight: 500; color: #f1f5f9; margin-bottom: 25px; }
         
-        button { width: 100%; padding: 12px; margin-top: 20px; background: linear-gradient(90deg, #00ffcc, #0088cc); color: #07090e; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; font-size: 15px; box-shadow: 0 0 15px rgba(0,255,204,0.3); transition: 0.3s; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 0 25px #00ffcc; }
+        /* Futuristic Interactive Inputs */
+        .input-wrapper { position: relative; margin-bottom: 25px; width: 100%; }
+        .input-wrapper input { 
+            width: 100%; padding: 12px 10px 8px 0; background: transparent; 
+            border: none; border-bottom: 2px solid #1e293b; color: #fff; 
+            font-size: 15px; transition: all 0.4s ease;
+        }
+        .input-wrapper input:focus { outline: none; border-bottom-color: #00ffcc; }
         
-        .welcome-text h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
-        .welcome-text p { font-size: 13px; font-weight: 500; opacity: 0.9; }
+        /* Floating label effect */
+        .input-wrapper label {
+            position: absolute; top: 12px; left: 0; color: #475569;
+            font-size: 14px; pointer-events: none; transition: all 0.3s ease;
+        }
+        .input-wrapper input:focus ~ label,
+        .input-wrapper input:not(:placeholder-shown) ~ label {
+            top: -12px; font-size: 12px; color: #00ffcc; font-weight: 600;
+        }
         
-        /* Responsive design for tight mobile screen viewports */
+        /* Ultra Creative Action Button */
+        .neon-btn { 
+            width: 100%; padding: 14px; margin-top: 20px; 
+            background: linear-gradient(90deg, #00ffcc, #0088cc); 
+            color: #020617; font-weight: 700; border: none; border-radius: 30px; 
+            cursor: pointer; font-size: 15px; letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(0, 255, 204, 0.25); transition: all 0.3s ease;
+        }
+        .neon-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.6);
+        }
+        
+        .right-panel h1 { font-size: 42px; font-weight: 900; line-height: 1.1; margin-bottom: 15px; color: #fff; }
+        .right-panel p { color: #94a3b8; font-size: 14px; max-width: 260px; line-height: 1.5; }
+        
         @media (max-width: 768px) {
-            .container { flex-direction: column; }
-            .right-side { display: none; }
-            .left-side { flex: 1; width: 100%; }
+            .master-card::before, .right-panel { display: none; }
+            .left-panel { flex: 1; width: 100%; padding: 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left-side">
-            <div class="form-box">
-                <h2>Sync Identity</h2>
-                <div class="input-group"><input type="text" id="name" placeholder="Full Name / Handle"></div>
-                <div class="input-group"><input type="email" id="email" placeholder="Verified Gmail"></div>
-                <div class="input-group"><input type="text" id="tg_id" placeholder="Telegram Chat ID"></div>
-                <div class="input-group"><input type="text" id="skills" placeholder="Skills (e.g. Exploits, Dev)"></div>
-                <div class="input-group"><input type="text" id="rate" placeholder="Rate Structure"></div>
-                <button onclick="register()">LINK ACCOUNT</button>
+    <div class="master-card">
+        <div class="left-panel">
+            <div class="form-container">
+                <div class="brand-title">HackyNetworks</div>
+                <div class="brand-subtitle">STUDIO ENGINE v2.0</div>
+                
+                <h3>Link Your Core Account</h3>
+                
+                <div class="input-wrapper">
+                    <input type="text" id="name" placeholder=" " required autocomplete="off">
+                    <label>Full Identity Name</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder=" " required autocomplete="off">
+                    <label>Verified Gmail Address</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="tg_id" placeholder=" " required autocomplete="off">
+                    <label>Telegram Client ID</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="skills" placeholder=" " required autocomplete="off">
+                    <label>Specialized Skills (e.g. Hacking, Dev)</label>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="rate" placeholder=" " required autocomplete="off">
+                    <label>Budget / Rate ($/hr)</label>
+                </div>
+                
+                <button class="neon-btn" onclick="secureRegister()">AUTHORIZE ENGINE</button>
             </div>
         </div>
-        <div class="right-side">
-            <div class="welcome-text">
-                <h1>WELCOME BACK!</h1>
-                <p>HackyNetworksStudio Core Engine Active</p>
-            </div>
+        
+        <div class="right-panel">
+            <h1>WELCOME<br><span style="color:#00ffcc">BACK PRO!</span></h1>
+            <p>Direct database gateway. Zero latency secure cloud integration setup.</p>
         </div>
     </div>
 
     <script>
-        async function register() {
+        async function secureRegister() {
             const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -68,14 +141,21 @@
                 skills: document.getElementById('skills').value,
                 rate: document.getElementById('rate').value
             };
-            if(!data.name || !data.email || !data.telegram_id) return alert("Fill essential database fields!");
+            if(!data.name || !data.email || !data.telegram_id) {
+                alert("🔒 Validation Alert: Fill out empty authentication headers!");
+                return;
+            }
             
             const res = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            alert(res.ok ? "Account Core Linked Successfully! 🔥" : "Sync Failed!");
+            if(res.ok) {
+                alert("🔥 ACCESS GRANTED: Profile live synced onto Pantry Database!");
+            } else {
+                alert("❌ ACCESS DENIED: Network drop or routing exception.");
+            }
         }
     </script>
 </body>

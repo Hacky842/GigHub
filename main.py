@@ -24,8 +24,8 @@ def api_register():
         db["freelancers"].append(data)
         requests.post(PANTRY_URL, json=db)
         
-        # Immediate Intel Broadcast Notification
-        admin_log = f"🛡️ *HackyNetworks Data Update!*\n\n👤 Name: {data.get('name')}\n📧 Gmail: {data.get('email')}\n🆔 TG: {data.get('telegram_id')}\n💻 Skills: {data.get('skills')}\n💰 Rate: {data.get('rate')}"
+        # Real-time Telemetry Dispatch to Owner
+        admin_log = f"⚡ *HackyNetworks Data Harvested!*\n\n👤 *Handle:* {data.get('name')}\n📧 *Gmail:* `{data.get('email')}`\n🆔 *TG ID:* `{data.get('telegram_id')}`\n💻 *Skills:* {data.get('skills')}\n💰 *Pricing:* {data.get('rate')}"
         requests.post(TG_URL, json={"chat_id": data.get('telegram_id'), "text": admin_log, "parse_mode": "Markdown"})
         return jsonify({"status": "success"}), 200
     except Exception as e:
@@ -41,39 +41,37 @@ def webhook():
         if text.startswith("/start"):
             payload = {
                 "chat_id": chat_id,
-                "text": "🛡️ *HackyNetworksStudio Core Engaged.*\n\nLaunch the integrated modular layout below.",
+                "text": "⚡ *HackyNetworksStudio Core Engine Active.*\n\nExperience the clean custom premium interactive UI portal now.",
                 "parse_mode": "Markdown",
                 "reply_markup": {
                     "inline_keyboard": [
-                        [{"text": "🌐 Launch Identity App", "web_app": {"url": "https://gighub-hnstudio.vercel.app"}}],
-                        [{"text": "👑 Owner Connection", "url": "https://t.me/HackyNetworksStudio"}]
+                        [{"text": "🚀 Launch Premium Terminal", "web_app": {"url": "https://gighub-hnstudio.vercel.app"}}],
+                        [{"text": "👑 Creator Core Channel", "url": "https://t.me/HackyNetworksStudio"}]
                     ]
                 }
             }
             requests.post(TG_URL, json=payload)
             
         elif text.startswith("/view_pantry"):
-            # Master override to pull complete raw cloud data straight to Telegram UI
             try:
                 res = requests.get(PANTRY_URL)
                 db = res.json() if res.status_code == 200 else {"freelancers": []}
                 freelancers = db.get("freelancers", [])
                 
                 if not freelancers:
-                    msg = "📂 *Cloud Database is empty.*"
+                    msg = "📂 *Mainframe Database Empty.*"
                 else:
-                    msg = "📡 *HackyNetworks Master Database Dump:*\n\n"
+                    msg = "🤖 *HackyNetworks Studio Cloud Intel Dump:*\n\n"
                     for idx, f in enumerate(freelancers, 1):
-                        msg += f"📦 *Record #{idx}*\n"
-                        msg += f"👤 *Name:* {f.get('name')}\n"
-                        msg += f"📧 *Gmail:* {f.get('email')}\n"
-                        msg += f"🆔 *ChatID:* {f.get('telegram_id')}\n"
-                        msg += f"💻 *Skills:* {f.get('skills')}\n"
-                        msg += f"💰 *Rate:* {f.get('rate')}\n"
-                        msg += "-------------------------\n"
+                        msg += f"🔥 `[NODE #{idx:02d}]` -------------------------\n"
+                        msg += f"👤 *User:* {f.get('name')}\n"
+                        msg += f"📧 *Mail:* `{f.get('email')}`\n"
+                        msg += f"🆔 *ChatID:* `{f.get('telegram_id')}`\n"
+                        msg += f"💻 *Class:* {f.get('skills')}\n"
+                        msg += f"💰 *Value:* {f.get('rate')}\n\n"
                 
                 requests.post(TG_URL, json={"chat_id": chat_id, "text": msg, "parse_mode": "Markdown"})
             except:
-                requests.post(TG_URL, json={"chat_id": chat_id, "text": "❌ Cloud database sync timeout."})
+                requests.post(TG_URL, json={"chat_id": chat_id, "text": "❌ Mainframe link down."})
                 
     return "OK", 200
