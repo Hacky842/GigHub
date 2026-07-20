@@ -1,28 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>GigHub Verified Dashboard</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackyNetworksStudio | Engine</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 20px; text-align: center; }
-        .card { background: #222; padding: 15px; border-radius: 10px; margin: 10px 0; border: 1px solid #333; }
-        input, button { width: 90%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; }
-        button { background: #0088cc; color: white; font-weight: bold; cursor: pointer; }
-        .badge { color: #00ffcc; font-size: 12px; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0d0f12; color: #00ffcc; padding: 20px; text-align: center; }
+        .brand-header { font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #00ffcc; margin-bottom: 5px; }
+        .brand-sub { font-size: 12px; color: #888; letter-spacing: 2px; margin-bottom: 20px; }
+        .card { background: #161b22; padding: 20px; border-radius: 12px; border: 1px solid #00ffcc; box-shadow: 0 4px 15px rgba(0,255,204,0.1); max-width: 400px; margin: 0 auto; }
+        input { width: 90%; padding: 12px; margin: 8px 0; background: #0d0f12; border: 1px solid #333; color: #fff; border-radius: 6px; }
+        input:focus { border-color: #00ffcc; outline: none; }
+        button { width: 95%; padding: 12px; margin-top: 15px; background: #00ffcc; color: #0d0f12; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #fff; box-shadow: 0 0 15px #00ffcc; }
+        .footer-link { margin-top: 20px; display: block; color: #888; text-decoration: none; font-size: 13px; }
+        .footer-link:hover { color: #fff; }
     </style>
 </head>
 <body>
-    <h2>💼 GigHub Global</h2>
-    <p>Browser & MiniApp Sync System</p>
+    <div class="brand-header">⚡ HackyNetworksStudio</div>
+    <div class="brand-sub">NEXT-GEN MARKETPLACE ENGINE</div>
+    
     <div class="card">
-        <h3>Freelancer Registration</h3>
-        <input type="text" id="name" placeholder="Full Name">
-        <input type="email" id="email" placeholder="Verified Gmail">
-        <input type="text" id="tg_id" placeholder="Telegram ID/Chat ID">
-        <input type="text" id="skills" placeholder="Skills (eg: Hacking, Dev)">
-        <input type="text" id="rate" placeholder="Rate (eg: $50/hr)">
-        <button onclick="register()">Submit Profile</button>
+        <h3 style="color: #fff; margin-top: 0;">Verified Freelancer Onboarding</h3>
+        <input type="text" id="name" placeholder="Full Name / Handle">
+        <input type="email" id="email" placeholder="Verified Gmail Address">
+        <input type="text" id="tg_id" placeholder="Telegram Username or Chat ID">
+        <input type="text" id="skills" placeholder="Core Skills (e.g. Exploits, Web Dev)">
+        <input type="text" id="rate" placeholder="Pricing / Rate Structure">
+        <button onclick="register()">LINK ACCOUNT</button>
     </div>
+
+    <a href="https://t.me/HackyNetworksStudio" target="_blank" class="footer-link">Powered by @HackyNetworksStudio</a>
+
     <script>
         async function register() {
             const data = {
@@ -32,12 +42,14 @@
                 skills: document.getElementById('skills').value,
                 rate: document.getElementById('rate').value
             };
+            if(!data.name || !data.email) return alert("Fill essential intel fields!");
+            
             const res = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            alert(res.ok ? "Verified Profile Linked! 🔥" : "Failed!");
+            alert(res.ok ? "Database Synced and Verified! 🔥" : "Sync Failed!");
         }
     </script>
 </body>
