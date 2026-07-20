@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GigHub Verified Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #fff; padding: 20px; text-align: center; }
+        .card { background: #222; padding: 15px; border-radius: 10px; margin: 10px 0; border: 1px solid #333; }
+        input, button { width: 90%; padding: 10px; margin: 5px 0; border-radius: 5px; border: none; }
+        button { background: #0088cc; color: white; font-weight: bold; cursor: pointer; }
+        .badge { color: #00ffcc; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>💼 GigHub Global</h2>
+    <p>Browser & MiniApp Sync System</p>
+    <div class="card">
+        <h3>Freelancer Registration</h3>
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="email" id="email" placeholder="Verified Gmail">
+        <input type="text" id="tg_id" placeholder="Telegram ID/Chat ID">
+        <input type="text" id="skills" placeholder="Skills (eg: Hacking, Dev)">
+        <input type="text" id="rate" placeholder="Rate (eg: $50/hr)">
+        <button onclick="register()">Submit Profile</button>
+    </div>
+    <script>
+        async function register() {
+            const data = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                telegram_id: document.getElementById('tg_id').value,
+                skills: document.getElementById('skills').value,
+                rate: document.getElementById('rate').value
+            };
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            alert(res.ok ? "Verified Profile Linked! 🔥" : "Failed!");
+        }
+    </script>
+</body>
+</html>
