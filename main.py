@@ -1,44 +1,38 @@
 import os
-import asyncio
+import requests
 from flask import Flask, request
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler
 
 TOKEN = os.getenv("BOT_TOKEN")
+TELEGRAM_API = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 
 app = Flask(__name__)
 
-# Basic landing page taaki browser mein check kar sakein zinda hai ya nahi
 @app.route('/')
 def home():
     return "GigHub Server is Running Perfectly! 🚀"
 
-# Alag routing banate hain sirf telegram messages ke liye
 @app.route('/webhook', methods=['POST'])
 def webhook():
     if request.method == "POST":
-        try:
-            # initialize application locally inside function to prevent loop issues
-            tg_app = ApplicationBuilder().token(TOKEN).build()
+        data = request.get_json(force=True)
+        
+        # Check if it's a message and contains text
+        if "message" in data and "text" in data["message"]:
+            chat_id = data["message"]["chat"]["id"]
+            text = data["message"]["text"]
             
-            # Register your handlers here
-            async def start(update, context):
-                await update.message.reply_text("Bhai! GigHub Bot is live. Freelancers and Clients direct connection coming soon! 🔥")
+            # Agar user ne /start bheja
+            if text.startswith("/start"):
+                reply = "Bhai! GigHub Bot is live. Freelancers and Clients direct connection coming soon! 🔥"
                 
-            tg_app.add_handler(CommandHandler("start", start))
-            
-            # Process incoming update
-            update = Update.de_json(request.get_json(force=True), tg_app.bot)
-            
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(tg_app.process_update(update))
-            loop.close()
-            
-            return "OK", 200
-        except Exception as e:
-            print(f"Error handling webhook: {e}")
-            return "Error", 500
+                # Simple POST request to Telegram API
+                payload = {
+                    "chat_id": chat_id,
+                    "text": reply
+                }
+                requests.post(TELEGRAM_API, json=payload)
+                
+        return "OK", 200
     return "Invalid Method", 400
 
 if __name__ == "__main__":
