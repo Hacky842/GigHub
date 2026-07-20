@@ -3,35 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackyNetworksStudio | Engine</title>
+    <title>HackyNetworksStudio | Portal</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0d0f12; color: #00ffcc; padding: 20px; text-align: center; }
-        .brand-header { font-size: 24px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #00ffcc; margin-bottom: 5px; }
-        .brand-sub { font-size: 12px; color: #888; letter-spacing: 2px; margin-bottom: 20px; }
-        .card { background: #161b22; padding: 20px; border-radius: 12px; border: 1px solid #00ffcc; box-shadow: 0 4px 15px rgba(0,255,204,0.1); max-width: 400px; margin: 0 auto; }
-        input { width: 90%; padding: 12px; margin: 8px 0; background: #0d0f12; border: 1px solid #333; color: #fff; border-radius: 6px; }
-        input:focus { border-color: #00ffcc; outline: none; }
-        button { width: 95%; padding: 12px; margin-top: 15px; background: #00ffcc; color: #0d0f12; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #fff; box-shadow: 0 0 15px #00ffcc; }
-        .footer-link { margin-top: 20px; display: block; color: #888; text-decoration: none; font-size: 13px; }
-        .footer-link:hover { color: #fff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #07090e; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        
+        /* Split Background Container */
+        .container { display: flex; width: 100vw; height: 100vh; background: #0d1117; position: relative; }
+        
+        /* Left Panel - The Form Section */
+        .left-side { flex: 1.2; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; position: relative; }
+        
+        /* Right Panel - The Cool Aesthetic Banner */
+        .right-side { flex: 0.8; background: linear-gradient(135deg, #00ffcc, #0088cc); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #07090e; padding: 30px; text-align: center; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%); }
+        
+        .form-box { width: 100%; max-width: 340px; }
+        h2 { font-size: 28px; color: #fff; margin-bottom: 25px; font-weight: 600; letter-spacing: 1px; }
+        
+        .input-group { position: relative; margin-bottom: 20px; width: 100%; }
+        .input-group input { width: 100%; padding: 10px 0; background: none; border: none; border-bottom: 1px solid #333; color: #fff; font-size: 14px; transition: 0.3s; }
+        .input-group input:focus { outline: none; border-bottom-color: #00ffcc; }
+        
+        button { width: 100%; padding: 12px; margin-top: 20px; background: linear-gradient(90deg, #00ffcc, #0088cc); color: #07090e; font-weight: bold; border: none; border-radius: 25px; cursor: pointer; font-size: 15px; box-shadow: 0 0 15px rgba(0,255,204,0.3); transition: 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 0 25px #00ffcc; }
+        
+        .welcome-text h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; }
+        .welcome-text p { font-size: 13px; font-weight: 500; opacity: 0.9; }
+        
+        /* Responsive design for tight mobile screen viewports */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .right-side { display: none; }
+            .left-side { flex: 1; width: 100%; }
+        }
     </style>
 </head>
 <body>
-    <div class="brand-header">⚡ HackyNetworksStudio</div>
-    <div class="brand-sub">NEXT-GEN MARKETPLACE ENGINE</div>
-    
-    <div class="card">
-        <h3 style="color: #fff; margin-top: 0;">Verified Freelancer Onboarding</h3>
-        <input type="text" id="name" placeholder="Full Name / Handle">
-        <input type="email" id="email" placeholder="Verified Gmail Address">
-        <input type="text" id="tg_id" placeholder="Telegram Username or Chat ID">
-        <input type="text" id="skills" placeholder="Core Skills (e.g. Exploits, Web Dev)">
-        <input type="text" id="rate" placeholder="Pricing / Rate Structure">
-        <button onclick="register()">LINK ACCOUNT</button>
+    <div class="container">
+        <div class="left-side">
+            <div class="form-box">
+                <h2>Sync Identity</h2>
+                <div class="input-group"><input type="text" id="name" placeholder="Full Name / Handle"></div>
+                <div class="input-group"><input type="email" id="email" placeholder="Verified Gmail"></div>
+                <div class="input-group"><input type="text" id="tg_id" placeholder="Telegram Chat ID"></div>
+                <div class="input-group"><input type="text" id="skills" placeholder="Skills (e.g. Exploits, Dev)"></div>
+                <div class="input-group"><input type="text" id="rate" placeholder="Rate Structure"></div>
+                <button onclick="register()">LINK ACCOUNT</button>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="welcome-text">
+                <h1>WELCOME BACK!</h1>
+                <p>HackyNetworksStudio Core Engine Active</p>
+            </div>
+        </div>
     </div>
-
-    <a href="https://t.me/HackyNetworksStudio" target="_blank" class="footer-link">Powered by @HackyNetworksStudio</a>
 
     <script>
         async function register() {
@@ -42,14 +68,14 @@
                 skills: document.getElementById('skills').value,
                 rate: document.getElementById('rate').value
             };
-            if(!data.name || !data.email) return alert("Fill essential intel fields!");
+            if(!data.name || !data.email || !data.telegram_id) return alert("Fill essential database fields!");
             
             const res = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            alert(res.ok ? "Database Synced and Verified! 🔥" : "Sync Failed!");
+            alert(res.ok ? "Account Core Linked Successfully! 🔥" : "Sync Failed!");
         }
     </script>
 </body>
