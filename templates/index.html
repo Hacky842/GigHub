@@ -3,157 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HackyNetworks | Connect & Work</title>
+    <title>HackyNetworksStudio</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0b0f19, #111827, #1f2937);
-            background-size: 300% 300%;
-            animation: gradientBg 12s ease infinite;
-            color: #f3f4f6;
+            background: radial-gradient(circle at 50% 10%, #0f172a, #020617);
+            color: #f8fafc;
             overflow-x: hidden;
+            padding: 20px 0;
         }
 
-        @keyframes gradientBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Ambient Glow Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: #38bdf8;
+            filter: blur(140px);
+            opacity: 0.15;
+            z-index: 0;
         }
 
-        /* Glassmorphic Card Container */
         .glass-card {
-            width: 90%;
-            max-width: 420px;
-            padding: 35px 30px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            width: 92%;
+            max-width: 440px;
+            padding: 30px 25px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
             position: relative;
-            transition: all 0.4s ease;
+            z-index: 1;
         }
 
-        .brand-header { text-align: center; margin-bottom: 25px; }
-        .brand-header h1 { font-size: 28px; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px; }
-        .brand-header p { font-size: 13px; color: #9ca3af; margin-top: 4px; }
+        .brand-header { text-align: center; margin-bottom: 20px; }
+        .brand-header h1 { font-size: 26px; font-weight: 800; color: #38bdf8; letter-spacing: -0.5px; text-shadow: 0 0 15px rgba(56,189,248,0.3); }
+        .brand-header p { font-size: 13px; color: #94a3b8; margin-top: 4px; }
 
-        .input-group { margin-bottom: 18px; }
+        /* Auth Mode Switcher (Tab) */
+        .tab-switcher {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #94a3b8;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
+        }
+
+        .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: 500; }
         .input-group input, .input-group select {
             width: 100%;
             padding: 12px 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
             color: #fff;
             font-size: 14px;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s;
         }
-        .input-group select option { background: #111827; color: #fff; }
+        .input-group select option { background: #0f172a; color: #fff; }
         .input-group input:focus, .input-group select:focus {
             border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+            background: rgba(255, 255, 255, 0.07);
         }
 
-        .btn-submit {
+        .btn-action {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(90deg, #38bdf8, #0284c7);
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
             color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 8px;
+            transition: all 0.3s;
+            margin-top: 5px;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
         }
-        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-action:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(56, 189, 248, 0.4); }
 
-        /* Dynamic Step Switcher */
         .step-panel { display: none; }
-        .step-panel.active { display: block; animation: slideIn 0.4s ease; }
+        .step-panel.active { display: block; animation: fadeIn 0.3s ease-in-out; }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* 6-Digit OTP Box Grid */
-        .otp-grid { display: flex; justify-content: space-between; gap: 8px; margin: 25px 0; }
+        /* OTP Input Boxes */
+        .otp-grid { display: flex; justify-content: space-between; gap: 8px; margin: 20px 0; }
         .otp-grid input {
             width: 45px;
-            height: 50px;
+            height: 52px;
             text-align: center;
             font-size: 20px;
             font-weight: 700;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: #38bdf8;
             outline: none;
+            transition: 0.2s;
         }
-        .otp-grid input:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+        .otp-grid input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
 
-        /* Footer Policy Links */
-        .policy-links { margin-top: 25px; text-align: center; font-size: 11px; color: #9ca3af; }
-        .policy-links a { color: #38bdf8; text-decoration: none; margin: 0 6px; cursor: pointer; }
-        .policy-links a:hover { text-decoration: underline; }
+        .policy-footer { margin-top: 20px; text-align: center; font-size: 11px; color: #64748b; }
+        .policy-footer a { color: #38bdf8; text-decoration: none; cursor: pointer; }
 
-        /* Modals for Policy & Reporting */
+        /* Modal Base */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center; z-index: 99;
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 100;
         }
-        .modal-content {
-            background: #111827; border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 16px; padding: 25px; width: 90%; max-width: 450px;
-            color: #e5e7eb; max-height: 80vh; overflow-y: auto;
+        .modal-box {
+            background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px; padding: 25px; width: 90%; max-width: 420px; color: #f1f5f9;
         }
-        .modal-content h3 { color: #38bdf8; margin-bottom: 12px; }
-        .modal-content p { font-size: 13px; line-height: 1.6; margin-bottom: 12px; color: #d1d5db; }
-        .close-btn { background: #374151; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; float: right; margin-top: 10px; }
+        .close-btn { background: #334155; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; float: right; margin-top: 15px; }
 
-        /* Floating Support Button */
         .floating-support {
             position: fixed; bottom: 20px; right: 20px;
-            background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8;
-            color: #38bdf8; padding: 10px 16px; border-radius: 30px;
+            background: rgba(15, 23, 42, 0.8); border: 1px solid #38bdf8;
+            color: #38bdf8; padding: 10px 18px; border-radius: 30px;
             font-size: 12px; font-weight: 600; text-decoration: none;
             backdrop-filter: blur(10px); transition: 0.3s; z-index: 10;
         }
-        .floating-support:hover { background: #38bdf8; color: #0f172a; }
+        .floating-support:hover { background: #38bdf8; color: #020617; }
     </style>
 </head>
 <body>
 
     <div class="glass-card">
         <div class="brand-header">
-            <h1>HackyNetworks</h1>
-            <p>Connect with Verified Freelancers & Clients</p>
+            <h1>HackyNetworksStudio</h1>
+            <p>Direct Freelancer & Client Marketplace</p>
         </div>
 
-        <!-- STEP 1: REGISTRATION -->
-        <div id="step1" class="step-panel active">
+        <div class="tab-switcher" id="authTabs">
+            <button class="tab-btn active" onclick="switchAuthMode('signup')">Create Account</button>
+            <button class="tab-btn" onclick="switchAuthMode('login')">Existing Login</button>
+        </div>
+
+        <!-- FORM PANEL: SIGNUP -->
+        <div id="signupPanel" class="step-panel active">
             <div class="input-group">
                 <label>Full Name</label>
-                <input type="text" id="name" placeholder="Enter your full name">
+                <input type="text" id="name" placeholder="John Doe">
             </div>
             <div class="input-group">
                 <label>Email Address</label>
                 <input type="email" id="email" placeholder="name@example.com">
             </div>
             <div class="input-group">
-                <label>I am a</label>
+                <label>Telegram Username</label>
+                <input type="text" id="tg_user" placeholder="@username">
+            </div>
+            <div class="input-group">
+                <label>Account Role</label>
                 <select id="role">
                     <option value="Freelancer">Freelancer looking for work</option>
                     <option value="Client">Client looking to hire</option>
@@ -161,140 +198,173 @@
             </div>
             <div class="input-group">
                 <label>Skills / Service Details</label>
-                <input type="text" id="skills" placeholder="e.g. Web Development, Video Editing">
+                <input type="text" id="skills" placeholder="e.g. Video Editing, Web Development">
             </div>
-            <button class="btn-submit" onclick="sendEmailOTP()">Send Verification Code</button>
+            <button class="btn-action" onclick="sendOTP('signup')">Send Verification Code</button>
         </div>
 
-        <!-- STEP 2: 6-DIGIT OTP VERIFICATION -->
-        <div id="step2" class="step-panel">
-            <p style="text-align: center; font-size: 13px; color: #cbd5e1;">We have sent a 6-digit verification code to your email.</p>
-            
+        <!-- FORM PANEL: LOGIN -->
+        <div id="loginPanel" class="step-panel">
+            <div class="input-group">
+                <label>Registered Email</label>
+                <input type="email" id="login_email" placeholder="name@example.com">
+            </div>
+            <button class="btn-action" onclick="sendOTP('login')">Request Login OTP</button>
+        </div>
+
+        <!-- OTP VERIFICATION SCREEN -->
+        <div id="otpPanel" class="step-panel">
+            <p style="text-align: center; font-size: 13px; color: #94a3b8;">Enter the 6-digit code sent to your email.</p>
             <div class="otp-grid">
-                <input type="text" id="digit1" maxlength="1" oninput="moveNext(this, 'digit2')">
-                <input type="text" id="digit2" maxlength="1" oninput="moveNext(this, 'digit3')">
-                <input type="text" id="digit3" maxlength="1" oninput="moveNext(this, 'digit4')">
-                <input type="text" id="digit4" maxlength="1" oninput="moveNext(this, 'digit5')">
-                <input type="text" id="digit5" maxlength="1" oninput="moveNext(this, 'digit6')">
-                <input type="text" id="digit6" maxlength="1">
+                <input type="text" id="d1" maxlength="1" oninput="moveNext(this, 'd2')">
+                <input type="text" id="d2" maxlength="1" oninput="moveNext(this, 'd3')">
+                <input type="text" id="d3" maxlength="1" oninput="moveNext(this, 'd4')">
+                <input type="text" id="d4" maxlength="1" oninput="moveNext(this, 'd5')">
+                <input type="text" id="d5" maxlength="1" oninput="moveNext(this, 'd6')">
+                <input type="text" id="d6" maxlength="1">
             </div>
-
-            <button class="btn-submit" onclick="verifyOTP()">Verify & Complete Signup</button>
+            <button class="btn-action" onclick="verifyOTP()">Verify Code & Proceed</button>
         </div>
 
-        <!-- STEP 3: DASHBOARD & REPORT USER ACTIVE VIEW -->
-        <div id="step3" class="step-panel">
-            <h3 style="text-align: center; color: #4ade80; margin-bottom: 8px;">Account Verified! 🎉</h3>
-            <p style="text-align: center; font-size: 13px; color: #9ca3af; margin-bottom: 20px;">Your details are synced and your profile is active on our network.</p>
+        <!-- USER DASHBOARD / ACTIVE VIEW -->
+        <div id="dashboardPanel" class="step-panel">
+            <h3 style="text-align: center; color: #4ade80; margin-bottom: 6px;">Profile Verified! 🎉</h3>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 20px;" id="welcomeMsg"></p>
 
-            <button class="btn-submit" style="background: #ef4444;" onclick="openReportModal()">Report a User</button>
-            <button class="btn-submit" style="background: #374151; margin-top: 10px;" onclick="location.reload()">Back to Main</button>
+            <button class="btn-action" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="openModal('reportModal')">Report Fraud User</button>
+            <button class="btn-action" style="background: #334155; margin-top: 10px;" onclick="location.reload()">Logout Session</button>
         </div>
 
-        <!-- Policy Links Footer -->
-        <div class="policy-links">
-            By signing up, you agree to our 
+        <div class="policy-footer">
+            By accessing this platform, you accept our <br>
             <a onclick="openModal('termsModal')">Terms of Service</a> & 
             <a onclick="openModal('privacyModal')">Privacy Policy</a>
         </div>
     </div>
 
+    <!-- REPORT USER MODAL -->
+    <div id="reportModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="color: #ef4444; margin-bottom: 10px;">Report User Violation</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Provide detailed incident reports. False reports cause Gig Point deductions.</p>
+            
+            <div class="input-group">
+                <label>Target User (Name / Email / Telegram)</label>
+                <input type="text" id="targetUser" placeholder="e.g. rv4405045@gmail.com">
+            </div>
+            <div class="input-group">
+                <label>Detailed Incident Explanation</label>
+                <input type="text" id="reportReason" placeholder="Explain what happened in detail...">
+            </div>
+            <button class="btn-action" style="background: #ef4444;" onclick="submitReport()">Submit Detailed Incident</button>
+            <button class="close-btn" onclick="closeModal('reportModal')">Cancel</button>
+        </div>
+    </div>
+
     <!-- TERMS OF SERVICE MODAL -->
     <div id="termsModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Terms of Service</h3>
-            <p>We provide a free platform to help Clients and Freelancers connect directly. We are not responsible or liable for any monetary loss, payment issues, or disputes between users.</p>
-            <p><strong>User Reports & Account Bans:</strong><br>
-            * If a user receives 5 verified reports, their account will be permanently banned from this platform.<br>
-            * Reports must include a clear and detailed explanation of what occurred.<br>
-            * Fake or spam reports are strictly prohibited. Submitting false reports will result in a deduction of your Gig Points or a permanent ban of your account.</p>
+        <div class="modal-box">
+            <h3 style="color: #38bdf8; margin-bottom: 10px;">Terms of Service</h3>
+            <p style="font-size: 12px; line-height: 1.6; color: #cbd5e1;">
+                We connect Clients and Freelancers directly for free. We hold no liability or responsibility for financial scams or payment failures.<br><br>
+                <strong>Ban Policy:</strong> Receiving 5 verified reports results in a permanent platform ban. False reports lead to score deductions.
+            </p>
             <button class="close-btn" onclick="closeModal('termsModal')">Close</button>
         </div>
     </div>
 
     <!-- PRIVACY POLICY MODAL -->
     <div id="privacyModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Privacy Policy</h3>
-            <p>Your account information is securely stored on our cloud database (GetPantry.Cloud). Authorized platform administrators can view your details to maintain system integrity.</p>
-            <p>We may contact you directly via email or Telegram, but only for important platform updates, urgent security alerts, or account notices.</p>
+        <div class="modal-box">
+            <h3 style="color: #38bdf8; margin-bottom: 10px;">Privacy Policy</h3>
+            <p style="font-size: 12px; line-height: 1.6; color: #cbd5e1;">
+                User details are securely stored on GetPantry.Cloud. Administrators access logs strictly for account safety and dispute resolution. We contact you only when critical.
+            </p>
             <button class="close-btn" onclick="closeModal('privacyModal')">Close</button>
         </div>
     </div>
 
-    <!-- REPORT USER MODAL -->
-    <div id="reportModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 style="color: #ef4444;">Report a User</h3>
-            <p>Describe what happened in detail. False reports will result in penalization.</p>
-            <div class="input-group">
-                <label>User Name or Email to Report</label>
-                <input type="text" id="targetUser" placeholder="Enter target user name/email">
-            </div>
-            <div class="input-group">
-                <label>Detailed Explanation</label>
-                <input type="text" id="reportReason" placeholder="Explain the incident clearly">
-            </div>
-            <button class="btn-submit" style="background: #ef4444;" onclick="submitReport()">Submit Detailed Report</button>
-            <button class="close-btn" onclick="closeModal('reportModal')">Cancel</button>
-        </div>
-    </div>
-
-    <!-- FLOATING DIRECT SUPPORT LINK -->
-    <a href="https://t.me/HackyNetworksStudio" target="_blank" class="floating-support">💬 Chat with Admin</a>
+    <a href="https://t.me/HackyNetworksStudio" target="_blank" class="floating-support">💬 Support Admin</a>
 
     <script>
-        function moveNext(current, nextId) {
-            if (current.value.length >= 1) {
-                document.getElementById(nextId).focus();
+        let currentAuthMode = 'signup';
+        let currentEmail = '';
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('signupPanel').classList.remove('active');
+            document.getElementById('loginPanel').classList.remove('active');
+
+            if(mode === 'signup') {
+                event.target.classList.add('active');
+                document.getElementById('signupPanel').classList.add('active');
+            } else {
+                event.target.classList.add('active');
+                document.getElementById('loginPanel').classList.add('active');
             }
+        }
+
+        function moveNext(current, nextId) {
+            if (current.value.length >= 1) document.getElementById(nextId).focus();
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function openReportModal() { openModal('reportModal'); }
 
-        async function sendEmailOTP() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const role = document.getElementById('role').value;
-            const skills = document.getElementById('skills').value;
+        async function sendOTP(mode) {
+            let bodyData = { mode: mode };
+            
+            if(mode === 'signup') {
+                bodyData.name = document.getElementById('name').value;
+                bodyData.email = document.getElementById('email').value;
+                bodyData.tg_user = document.getElementById('tg_user').value;
+                bodyData.role = document.getElementById('role').value;
+                bodyData.skills = document.getElementById('skills').value;
 
-            if(!name || !email) { alert("Please fill in your name and email."); return; }
+                if(!bodyData.name || !bodyData.email) { alert("Please complete name and email."); return; }
+                currentEmail = bodyData.email;
+            } else {
+                bodyData.email = document.getElementById('login_email').value;
+                if(!bodyData.email) { alert("Please enter registered email."); return; }
+                currentEmail = bodyData.email;
+            }
 
             const res = await fetch('/api/send-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, role, skills })
+                body: JSON.stringify(bodyData)
             });
 
             if(res.ok) {
-                document.getElementById('step1').classList.remove('active');
-                document.getElementById('step2').classList.add('active');
+                document.getElementById('signupPanel').classList.remove('active');
+                document.getElementById('loginPanel').classList.remove('active');
+                document.getElementById('authTabs').style.display = 'none';
+                document.getElementById('otpPanel').classList.add('active');
             } else {
-                alert("Failed to send code. Please try again.");
+                const data = await res.json();
+                alert(data.message || "Sending failed!");
             }
         }
 
         async function verifyOTP() {
-            let enteredOtp = '';
-            for(let i=1; i<=6; i++) {
-                enteredOtp += document.getElementById('digit' + i).value;
-            }
+            let otp = '';
+            for(let i=1; i<=6; i++) otp += document.getElementById('d' + i).value;
 
-            if(enteredOtp.length < 6) { alert("Please enter the complete 6-digit code."); return; }
+            if(otp.length < 6) { alert("Enter complete 6-digit code."); return; }
 
             const res = await fetch('/api/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ otp: enteredOtp })
+                body: JSON.stringify({ email: currentEmail, otp: otp })
             });
 
             if(res.ok) {
-                document.getElementById('step2').classList.remove('active');
-                document.getElementById('step3').classList.add('active');
+                document.getElementById('otpPanel').classList.remove('active');
+                document.getElementById('dashboardPanel').classList.add('active');
+                document.getElementById('welcomeMsg').innerText = `Active Account: ${currentEmail}`;
             } else {
-                alert("Invalid verification code!");
+                alert("Invalid or expired verification code!");
             }
         }
 
@@ -302,16 +372,16 @@
             const target = document.getElementById('targetUser').value;
             const reason = document.getElementById('reportReason').value;
 
-            if(!target || !reason) { alert("Please provide both the user name and a detailed explanation."); return; }
+            if(!target || !reason) { alert("Target and detailed explanation are required!"); return; }
 
             const res = await fetch('/api/report-user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ target, reason })
+                body: JSON.stringify({ reporter: currentEmail, target: target, reason: reason })
             });
 
             if(res.ok) {
-                alert("Report submitted successfully. Administrators will review it.");
+                alert("Detailed Report logged into Cloud Database & sent to Admin!");
                 closeModal('reportModal');
             }
         }

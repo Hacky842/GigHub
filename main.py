@@ -13,6 +13,22 @@ PANTRY_URL = f"https://getpantry.cloud/apiv1/pantry/{PANTRY_ID}/basket/gighub_pr
 app = Flask(__name__, template_folder='templates')
 
 session_data = {}
+ADMIN_CHAT_ID = None
+
+def sync_pantry(db):
+    try: requests.post(PANTRY_URL, json=db)
+    except Exception as e: print(f"Pantry sync error: {e}")
+
+def get_pantry_db():
+    try:
+        res = requests.get(PANTRY_URL)
+        if res.status_code == 200:
+            data = res.json()
+            if "users" not in data: data["users"] = []
+            if "reports" not in data: data["reports"] = []
+            return data
+    except: pass
+    return {"users": [], "reports": []}
 
 @app.route('/')
 def home():
@@ -22,118 +38,157 @@ def home():
 def send_otp():
     data = request.get_json(force=True)
     email = data.get('email')
-    name = data.get('name')
+    mode = data.get('mode')
     
+    db = get_pantry_db()
+    existing_user = next((u for u in db["users"] if u.get("email") == email), None)
+
+    if mode == 'login' and not existing_user:
+        return jsonify({"message": "Email not found. Please register first."}), 400
+
     otp = str(random.randint(100000, 999999))
-    session_data[email] = {"otp": otp, "user_info": data}
-    
-    # 1. Dispatch Email via Resend API
+    session_data[email] = {"otp": otp, "temp_info": data}
+
+    # High Professional HTML Template for Resend Email OTP
     if RESEND_API_KEY:
         try:
-            headers = {
-                "Authorization": f"Bearer {RESEND_API_KEY}",
-                "Content-Type": "application/json"
-            }
-            email_payload = {
-                "from": "HackyNetworks <onboarding@resend.dev>",
+            headers = {"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"}
+            html_content = f"""
+            <div style="background-color: #020617; padding: 35px 20px; font-family: sans-serif; color: #f8fafc; text-align: center;">
+                <div style="max-width: 450px; margin: 0 auto; background: #0f172a; border-radius: 16px; padding: 30px; border: 1px solid #1e293b;">
+                    <h1 style="color: #38bdf8; font-size: 24px; margin-bottom: 8px;">HackyNetworksStudio</h1>
+                    <p style="color: #94a3b8; font-size: 13px;">Security Code Verification</p>
+                    <div style="margin: 25px 0; background: #1e293b; padding: 18px; border-radius: 12px; border: 1px dashed #38bdf8;">
+                        <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #38bdf8;">{otp}</span>
+                    </div>
+                    <p style="font-size: 12px; color: #64748b;">Use this 6-digit code to complete your authorization. Valid for 10 minutes.</p>
+                </div>
+            </div>
+            """
+            payload = {
+                "from": "HackyNetworksStudio <onboarding@resend.dev>",
                 "to": [email],
-                "subject": "Your Verification Code - HackyNetworks",
-                "html": f"<div style='font-family:sans-serif; padding:20px; background:#111827; color:#fff; border-radius:10px;'><h2>Welcome to HackyNetworks!</h2><p>Your 6-digit verification code is:</p><h1 style='color:#38bdf8; letter-spacing:4px;'>{otp}</h1><p>Do not share this code with anyone.</p></div>"
+                "subject": f"[{otp}] HackyNetworksStudio Verification Code",
+                "html": html_content
             }
-            requests.post("https://api.resend.com/emails", json=email_payload, headers=headers)
-        except Exception as e:
-            print(f"Resend error: {e}")
-
-    # Backup Alert to Telegram Admin Log
-    admin_log = f"📩 *New Signup Verification Code*\n\n👤 *Name:* {name}\n📧 *Email:* `{email}`\n🔑 *Code:* `{otp}`"
-    try: requests.post(TG_URL, json={"chat_id": "YOUR_ADMIN_CHAT_ID", "text": admin_log, "parse_mode": "Markdown"})
-    except: pass
+            requests.post("https://api.resend.com/emails", json=payload, headers=headers)
+        except Exception as e: print(f"Email Dispatch Failure: {e}")
 
     return jsonify({"status": "sent"}), 200
 
 @app.route('/api/verify-otp', methods=['POST'])
 def verify_otp():
     data = request.get_json(force=True)
+    email = data.get('email')
     entered_otp = data.get('otp')
-    
-    for email, val in session_data.items():
-        if val["otp"] == entered_otp:
-            user_info = val["user_info"]
-            user_info["verified"] = True
-            user_info["reports"] = 0
-            
-            # Sync to Pantry Cloud Database
-            try:
-                res = requests.get(PANTRY_URL)
-                db = res.json() if res.status_code == 200 else {"freelancers": []}
-                db["freelancers"].append(user_info)
-                requests.post(PANTRY_URL, json=db)
+
+    if email in session_data and session_data[email]["otp"] == entered_otp:
+        temp = session_data[email]["temp_info"]
+        db = get_pantry_db()
+        
+        user = next((u for u in db["users"] if u.get("email") == email), None)
+        if not user:
+            user = {
+                "name": temp.get("name", "User"),
+                "email": email,
+                "tg_user": temp.get("tg_user", "@None"),
+                "role": temp.get("role", "Freelancer"),
+                "skills": temp.get("skills", "N/A"),
+                "report_count": 0,
+                "status": "active"
+            }
+            db["users"].append(user)
+            sync_pantry(db)
+
+        # Send Telegram Admin Alert
+        if ADMIN_CHAT_ID:
+            msg = f"🟢 *ACCOUNT AUTHORIZED*\n\n👤 *Name:* {user['name']}\n📧 *Email:* `{user['email']}`\n✈️ *Telegram:* {user['tg_user']}\n🎭 *Role:* {user['role']}\n🛠️ *Skills:* {user['skills']}"
+            try: requests.post(TG_URL, json={"chat_id": ADMIN_CHAT_ID, "text": msg, "parse_mode": "Markdown"})
             except: pass
-            
-            return jsonify({"status": "verified"}), 200
-            
-    return jsonify({"status": "invalid"}), 400
+
+        return jsonify({"status": "verified"}), 200
+
+    return jsonify({"message": "Invalid verification code"}), 400
 
 @app.route('/api/report-user', methods=['POST'])
 def report_user():
     data = request.get_json(force=True)
+    reporter = data.get('reporter')
     target = data.get('target')
     reason = data.get('reason')
+
+    db = get_pantry_db()
     
-    # Send Report straight to Admin Telegram
-    report_msg = f"🚨 *DETAILED USER REPORT SUBMITTED*\n\n👤 *Reported User:* `{target}`\n📝 *Detailed Incident Explanation:*\n\"{reason}\"\n\n⚠️ *Action:* Check Database to verify report history (5 strikes = Ban)."
-    try: requests.post(TG_URL, json={"chat_id": "YOUR_ADMIN_CHAT_ID", "text": report_msg, "parse_mode": "Markdown"})
-    except: pass
-    
-    return jsonify({"status": "reported"}), 200
+    # 1. Register Report directly into Cloud Storage (Pantry)
+    report_entry = {"reporter": reporter, "target": target, "reason": reason}
+    db["reports"].append(report_entry)
+
+    # 2. Increment Target User Report Counter
+    target_user = next((u for u in db["users"] if u.get("email") == target or u.get("name") == target), None)
+    rep_count = 1
+    if target_user:
+        target_user["report_count"] = target_user.get("report_count", 0) + 1
+        rep_count = target_user["report_count"]
+        if rep_count >= 5:
+            target_user["status"] = "banned"
+
+    sync_pantry(db)
+
+    # 3. Direct Message Alert to Telegram Admin
+    if ADMIN_CHAT_ID:
+        tg_msg = (
+            f"🚨 *DETAILED FRAUD INCIDENT REPORT*\n\n"
+            f"🕵️ *Reporter:* `{reporter}`\n"
+            f"👤 *Reported Target:* `{target}`\n"
+            f"📝 *Incident Explanation:*\n\"{reason}\"\n\n"
+            f"📊 *Target Report Score:* {rep_count}/5"
+        )
+        if rep_count >= 5:
+            tg_msg += "\n\n🚫 *AUTOMATIC BAN TRIGGERED (5/5 Strikes Reached)*"
+            
+        try: requests.post(TG_URL, json={"chat_id": ADMIN_CHAT_ID, "text": tg_msg, "parse_mode": "Markdown"})
+        except: pass
+
+    return jsonify({"status": "logged"}), 200
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    global ADMIN_CHAT_ID
     data = request.get_json(force=True)
     if "message" in data and "text" in data["message"]:
         chat_id = data["message"]["chat"]["id"]
         text = data["message"]["text"]
-        
+        ADMIN_CHAT_ID = chat_id  # Automatically registers Admin Chat ID
+
         if text.startswith("/start"):
             payload = {
                 "chat_id": chat_id,
-                "text": "👋 *Welcome to HackyNetworks Portal*\n\nAccess our marketplace platform below to find freelancers or offer your services.",
+                "text": "👋 *HackyNetworksStudio Command Center*\n\nAdmin session initialized. Launch marketplace or check status.",
                 "parse_mode": "Markdown",
                 "reply_markup": {
                     "inline_keyboard": [
-                        [{"text": "🌐 Launch App", "web_app": {"url": "https://gighub-hnstudio.vercel.app"}}],
-                        [{"text": "💬 Support", "url": "https://t.me/HackyNetworksStudio"}]
+                        [{"text": "🌐 Open Web App", "web_app": {"url": "https://gighub-hnstudio.vercel.app"}}],
+                        [{"text": "💬 Direct Admin Support", "url": "https://t.me/HackyNetworksStudio"}]
                     ]
                 }
             }
             requests.post(TG_URL, json=payload)
-            
-        elif text.startswith("/help"):
-            help_msg = (
-                "📖 *HackyNetworks Help & Platform Guide*\n\n"
-                "1️⃣ *How to Register:* Open the Web App, enter your email and request a 6-digit verification code.\n"
-                "2️⃣ *Reporting Rules:* You can report fraudulent users via the Web App. Reports must contain clear detailed explanations.\n"
-                "3️⃣ *5-Strike Policy:* Any account reaching 5 verified reports will be permanently banned from our platform.\n"
-                "4️⃣ *Support:* For urgent queries, contact @HackyNetworksStudio directly."
-            )
-            requests.post(TG_URL, json={"chat_id": chat_id, "text": help_msg, "parse_mode": "Markdown"})
 
         elif text.startswith("/view_pantry"):
-            try:
-                res = requests.get(PANTRY_URL)
-                db = res.json() if res.status_code == 200 else {"freelancers": []}
-                records = db.get("freelancers", [])
-                
-                if not records:
-                    msg = "📂 *Database is empty.*"
-                else:
-                    msg = "📋 *Master Platform Database:* \n\n"
-                    for idx, r in enumerate(records, 1):
-                        msg += f"#{idx} | {r.get('name')} ({r.get('role')})\n📧 Mail: `{r.get('email')}`\n💻 Skills: {r.get('skills')}\n-------------------\n"
-                
-                requests.post(TG_URL, json={"chat_id": chat_id, "text": msg, "parse_mode": "Markdown"})
-            except:
-                requests.post(TG_URL, json={"chat_id": chat_id, "text": "❌ Cloud connection failed."})
+            db = get_pantry_db()
+            users = db.get("users", [])
+            reports = db.get("reports", [])
+
+            msg = "📋 *HackyNetworksStudio Master Database*\n\n"
+            msg += f"👥 *Users Count:* {len(users)}\n"
+            for u in users:
+                msg += f"• {u.get('name')} | `{u.get('email')}` | TG: {u.get('tg_user')} | [{u.get('role')}] (Reports: {u.get('report_count')}/5)\n"
+            
+            msg += f"\n🚨 *Logged Reports Count:* {len(reports)}\n"
+            for r in reports:
+                msg += f"• Target: `{r.get('target')}` | Details: \"{r.get('reason')}\"\n"
+
+            requests.post(TG_URL, json={"chat_id": chat_id, "text": msg, "parse_mode": "Markdown"})
 
     return "OK", 200
 
