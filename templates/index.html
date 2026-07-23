@@ -3,365 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GigHub - Powered by HackyNetworksStudio</title>
+    <title>GigHub - Find Talent. Get Work Done.</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        
+
         body {
+            background-color: #030f26;
+            background-image: radial-gradient(circle at 50% 0%, #082859 0%, #030f26 70%);
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            background: radial-gradient(circle at 50% 10%, #0f172a, #020617);
-            color: #f8fafc;
-            overflow-x: hidden;
-            padding: 20px 0;
         }
 
-        .glass-card {
-            width: 92%;
-            max-width: 440px;
-            padding: 28px 22px;
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            position: relative;
-            z-index: 1;
-        }
-
-        .brand-header { text-align: center; margin-bottom: 20px; }
-        .brand-header h1 { 
-            font-size: 22px; 
-            font-weight: 800; 
-            color: #38bdf8; 
-            letter-spacing: -0.5px;
-            white-space: nowrap; /* Prevents "o" from dropping to next line */
-        }
-        .brand-header p { font-size: 13px; color: #94a3b8; margin-top: 4px; }
-
-        /* Auth Mode Switcher Tabs */
-        .tab-switcher {
+        /* Top Navbar */
+        header {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px 24px;
             display: flex;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 4px;
-            border-radius: 12px;
-            margin-bottom: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            justify-content: space-between;
+            align-items: center;
         }
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f59e0b, #06b6d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .logo-text { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+
+        .top-nav { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+        .top-nav a { color: #94a3b8; text-decoration: none; }
+        .top-nav a:hover { color: #fff; }
+
+        .btn-top-outline {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-top-filled {
+            background: #0f172a;
+            border: none;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Hero Text */
+        .hero-section {
             text-align: center;
+            margin: 20px 0 30px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .hero-title span { color: #3b82f6; }
+
+        .hero-subtitle {
+            color: #94a3b8;
+            font-size: 15px;
+            max-width: 500px;
+            margin: 0 auto 24px;
+            line-height: 1.5;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Clean White Auth Card Exact Like Image */
+        .auth-card {
+            background: #ffffff;
+            color: #0f172a;
+            width: 90%;
+            max-width: 480px;
+            border-radius: 20px;
+            padding: 32px 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
+        /* Tab Bar (Swaps between Login and Sign Up) */
+        .tab-bar {
+            display: flex;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 24px;
+        }
+
+        .tab-item {
+            flex: 1;
+            text-align: center;
+            padding-bottom: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #94a3b8;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .tab-item.active {
+            color: #0f172a;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: #2563eb;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            width: 18px;
+            height: 18px;
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #0f172a;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            border-color: #2563eb;
+            background: #fff;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            font-size: 12px;
+            color: #2563eb;
+            text-decoration: none;
+            margin-top: -8px;
+            margin-bottom: 20px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover { background: #1d4ed8; }
+
+        /* Security Notice Box */
+        .security-box {
+            margin-top: 24px;
+            background: #f0f9ff;
+            border: 1px solid #e0f2fe;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .security-box i { color: #0284c7; width: 22px; height: 22px; margin-top: 2px; }
+        .security-text h4 { font-size: 13px; font-weight: 600; color: #0f172a; }
+        .security-text p { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+        .panel-content { display: none; }
+        .panel-content.active { display: block; }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            text-align: center;
+            padding-bottom: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a { color: #94a3b8; text-decoration: none; }
+
+        .btn-telegram {
+            background: #ffffff;
+            color: #0f172a;
+            border: 1px solid #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
-            color: #94a3b8;
-            border: none;
-            background: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .tab-btn.active {
-            background: rgba(56, 189, 248, 0.2);
-            color: #38bdf8;
-            box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
+            text-decoration: none;
+            margin-bottom: 16px;
         }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: 500; }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-        }
-        .input-group select option { background: #0f172a; color: #fff; }
-
-        .btn-action {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #38bdf8, #0284c7);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 5px;
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
-        }
-
-        .step-panel { display: none; }
-        .step-panel.active { display: block; }
-
-        /* Fixed OTP Grid Container (Fits strictly inside card) */
-        .otp-grid { 
-            display: flex; 
-            justify-content: space-between; 
-            gap: 6px; 
-            margin: 20px 0; 
-            width: 100%;
-        }
-        .otp-grid input {
-            flex: 1;
-            min-width: 0;
-            height: 48px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #38bdf8;
-            outline: none;
-        }
-
-        .policy-footer { margin-top: 20px; text-align: center; font-size: 11px; color: #64748b; }
-        .policy-footer a { color: #38bdf8; text-decoration: none; cursor: pointer; }
-
-        /* Modal Overlay */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(10px);
-            display: none; justify-content: center; align-items: center; z-index: 100;
-        }
-        .modal-box {
-            background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px; padding: 25px; width: 90%; max-width: 420px; color: #f1f5f9;
-        }
-        .close-btn { background: #334155; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; float: right; margin-top: 15px; }
-
-        .floating-support {
-            position: fixed; bottom: 20px; right: 20px;
-            background: rgba(15, 23, 42, 0.8); border: 1px solid #38bdf8;
-            color: #38bdf8; padding: 10px 18px; border-radius: 30px;
-            font-size: 12px; font-weight: 600; text-decoration: none;
-            backdrop-filter: blur(10px); z-index: 10;
-        }
+        .powered-by { font-size: 12px; color: #64748b; }
+        .powered-by span { color: #3b82f6; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <div class="glass-card">
-        <div class="brand-header">
-            <h1>HackyNetworksStudio</h1>
-            <p>Direct Freelancer & Client Marketplace</p>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">G</div>
+            <span class="logo-text">GigHub</span>
         </div>
-
-        <div class="tab-switcher" id="authTabs">
-            <button class="tab-btn active" onclick="switchAuthMode('signup')">Create Account</button>
-            <button class="tab-btn" onclick="switchAuthMode('login')">Existing Login</button>
+        <div class="top-nav">
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <span style="color: #334155;">|</span>
+            <button class="btn-top-outline" onclick="switchTab('login')">Login</button>
+            <button class="btn-top-filled" onclick="switchTab('signup')">Sign Up</button>
         </div>
+    </header>
 
-        <!-- SIGNUP FORM -->
-        <div id="signupPanel" class="step-panel active">
-            <div class="input-group">
-                <label>Full Name</label>
-                <input type="text" id="name" placeholder="John Doe">
-            </div>
-            <div class="input-group">
-                <label>Email Address</label>
-                <input type="email" id="email" placeholder="name@example.com">
-            </div>
-            <div class="input-group">
-                <label>Telegram Username</label>
-                <input type="text" id="tg_user" placeholder="@username">
-            </div>
-            <div class="input-group">
-                <label>Account Role</label>
-                <select id="role">
-                    <option value="Freelancer">Freelancer looking for work</option>
-                    <option value="Client">Client looking to hire</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Skills / Service Details</label>
-                <input type="text" id="skills" placeholder="e.g. Video Editing, Web Development">
-            </div>
-            <button class="btn-action" onclick="sendOTP('signup')">Send Verification Code</button>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Find Talent.<br><span>Get Work Done.</span></h1>
+        <p class="hero-subtitle">
+            GigHub connects clients and freelancers across India. Post your need or find the perfect opportunity to grow your career.
+        </p>
+        <div class="hero-buttons">
+            <button class="btn-primary" onclick="switchTab('signup')">Get Started</button>
+            <button class="btn-secondary">How It Works</button>
+        </div>
+    </div>
+
+    <!-- Auth Card Container -->
+    <div class="auth-card">
+        
+        <!-- Toggle Tabs -->
+        <div class="tab-bar">
+            <div class="tab-item active" id="loginTab" onclick="switchTab('login')">Login</div>
+            <div class="tab-item" id="signupTab" onclick="switchTab('signup')">Sign Up</div>
         </div>
 
         <!-- LOGIN FORM -->
-        <div id="loginPanel" class="step-panel">
-            <div class="input-group">
-                <label>Registered Email</label>
-                <input type="email" id="login_email" placeholder="name@example.com">
+        <div id="loginPanel" class="panel-content active">
+            <form onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="mail"></i>
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="lock"></i>
+                        <input type="password" placeholder="Password" required>
+                        <i data-lucide="eye" style="left: auto; right: 14px; cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <a href="#" class="forgot-link">Forgot password?</a>
+
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+        </div>
+
+        <!-- SIGN UP FORM -->
+        <div id="signupPanel" class="panel-content">
+            <form onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="user"></i>
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="mail"></i>
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="lock"></i>
+                        <input type="password" placeholder="Password" required>
+                        <i data-lucide="eye" style="left: auto; right: 14px; cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>I want to join as</label>
+                    <div class="input-wrapper">
+                        <select>
+                            <option value="Freelancer">Freelancer</option>
+                            <option value="Client">Client</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i data-lucide="cog"></i>
+                        <input type="text" placeholder="Skills (e.g. Web Development, Graphic Design)">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+        </div>
+
+        <!-- Security Badge -->
+        <div class="security-box">
+            <i data-lucide="shield-check"></i>
+            <div class="security-text">
+                <h4>Your data is safe with us.</h4>
+                <p>We value your privacy and ensure a secure experience on GigHub.</p>
             </div>
-            <button class="btn-action" onclick="sendOTP('login')">Request Login OTP</button>
         </div>
 
-        <!-- OTP VERIFICATION SCREEN (Fixed Keyboard Numpad) -->
-        <div id="otpPanel" class="step-panel">
-            <p style="text-align: center; font-size: 13px; color: #94a3b8;">Enter the 6-digit code sent to your email.</p>
-            <div class="otp-grid">
-                <input type="text" id="d1" inputmode="numeric" pattern="[0-9]*" maxlength="1" oninput="moveNext(this, 'd2')">
-                <input type="text" id="d2" inputmode="numeric" pattern="[0-9]*" maxlength="1" oninput="moveNext(this, 'd3')">
-                <input type="text" id="d3" inputmode="numeric" pattern="[0-9]*" maxlength="1" oninput="moveNext(this, 'd4')">
-                <input type="text" id="d4" inputmode="numeric" pattern="[0-9]*" maxlength="1" oninput="moveNext(this, 'd5')">
-                <input type="text" id="d5" inputmode="numeric" pattern="[0-9]*" maxlength="1" oninput="moveNext(this, 'd6')">
-                <input type="text" id="d6" inputmode="numeric" pattern="[0-9]*" maxlength="1">
-            </div>
-            <button class="btn-action" onclick="verifyOTP()">Verify Code & Proceed</button>
-        </div>
-
-        <!-- USER DASHBOARD -->
-        <div id="dashboardPanel" class="step-panel">
-            <h3 style="text-align: center; color: #4ade80; margin-bottom: 6px;">Profile Verified! 🎉</h3>
-            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 20px;" id="welcomeMsg"></p>
-
-            <button class="btn-action" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="openModal('reportModal')">Report Fraud User</button>
-            <button class="btn-action" style="background: #334155; margin-top: 10px;" onclick="location.reload()">Logout Session</button>
-        </div>
-
-        <div class="policy-footer">
-            By accessing this platform, you accept our <br>
-            <a onclick="openModal('termsModal')">Terms of Service</a> & 
-            <a onclick="openModal('privacyModal')">Privacy Policy</a>
-        </div>
     </div>
 
-    <!-- REPORT USER MODAL -->
-    <div id="reportModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="color: #ef4444; margin-bottom: 10px;">Report User Violation</h3>
-            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Provide detailed incident reports. False reports cause Gig Point deductions.</p>
-            
-            <div class="input-group">
-                <label>Target User (Name / Email / Telegram)</label>
-                <input type="text" id="targetUser" placeholder="e.g. name@example.com">
-            </div>
-            <div class="input-group">
-                <label>Detailed Incident Explanation</label>
-                <input type="text" id="reportReason" placeholder="Explain what happened in detail...">
-            </div>
-            <button class="btn-action" style="background: #ef4444;" onclick="submitReport()">Submit Detailed Incident</button>
-            <button class="close-btn" onclick="closeModal('reportModal')">Cancel</button>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Terms of Service</a>
+            <span>|</span>
+            <a href="#">Privacy Policy</a>
         </div>
-    </div>
-
-    <!-- TERMS & PRIVACY MODALS -->
-    <div id="termsModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="color: #38bdf8; margin-bottom: 10px;">Terms of Service</h3>
-            <p style="font-size: 12px; line-height: 1.6; color: #cbd5e1;">We connect Clients and Freelancers directly. Receive 5 verified reports = Permanent ban.</p>
-            <button class="close-btn" onclick="closeModal('termsModal')">Close</button>
+        <div>
+            <a href="https://t.me/HackyNetworksStudio" target="_blank" class="btn-telegram">
+                <i data-lucide="send" style="width: 16px; height: 16px; color: #0284c7;"></i>
+                Contact Us on Telegram
+            </a>
         </div>
-    </div>
-
-    <div id="privacyModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3 style="color: #38bdf8; margin-bottom: 10px;">Privacy Policy</h3>
-            <p style="font-size: 12px; line-height: 1.6; color: #cbd5e1;">User details are securely stored on GetPantry.Cloud.</p>
-            <button class="close-btn" onclick="closeModal('privacyModal')">Close</button>
-        </div>
-    </div>
-
-    <a href="https://t.me/HackyNetworksStudio" target="_blank" class="floating-support">💬 Support Admin</a>
+        <p class="powered-by">Powered by <span>HackyNetworksStudio</span></p>
+    </footer>
 
     <script>
-        let currentAuthMode = 'signup';
-        let currentEmail = '';
+        lucide.createIcons();
 
-        function switchAuthMode(mode) {
-            currentAuthMode = mode;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('signupPanel').classList.remove('active');
-            document.getElementById('loginPanel').classList.remove('active');
+        function switchTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const loginPanel = document.getElementById('loginPanel');
+            const signupPanel = document.getElementById('signupPanel');
 
-            if(mode === 'signup') {
-                event.target.classList.add('active');
-                document.getElementById('signupPanel').classList.add('active');
+            if(tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginPanel.classList.add('active');
+                signupPanel.classList.remove('active');
             } else {
-                event.target.classList.add('active');
-                document.getElementById('loginPanel').classList.add('active');
-            }
-        }
-
-        function moveNext(current, nextId) {
-            if (current.value.length >= 1) document.getElementById(nextId).focus();
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        async function sendOTP(mode) {
-            let bodyData = { mode: mode };
-            
-            if(mode === 'signup') {
-                bodyData.name = document.getElementById('name').value;
-                bodyData.email = document.getElementById('email').value;
-                bodyData.tg_user = document.getElementById('tg_user').value;
-                bodyData.role = document.getElementById('role').value;
-                bodyData.skills = document.getElementById('skills').value;
-
-                if(!bodyData.name || !bodyData.email) { alert("Please complete name and email."); return; }
-                currentEmail = bodyData.email;
-            } else {
-                bodyData.email = document.getElementById('login_email').value;
-                if(!bodyData.email) { alert("Please enter registered email."); return; }
-                currentEmail = bodyData.email;
-            }
-
-            const res = await fetch('/api/send-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(bodyData)
-            });
-
-            if(res.ok) {
-                document.getElementById('signupPanel').classList.remove('active');
-                document.getElementById('loginPanel').classList.remove('active');
-                document.getElementById('authTabs').style.display = 'none';
-                document.getElementById('otpPanel').classList.add('active');
-            } else {
-                const data = await res.json();
-                alert(data.message || "Sending failed!");
-            }
-        }
-
-        async function verifyOTP() {
-            let otp = '';
-            for(let i=1; i<=6; i++) otp += document.getElementById('d' + i).value;
-
-            if(otp.length < 6) { alert("Enter complete 6-digit code."); return; }
-
-            const res = await fetch('/api/verify-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: currentEmail, otp: otp })
-            });
-
-            if(res.ok) {
-                document.getElementById('otpPanel').classList.remove('active');
-                document.getElementById('dashboardPanel').classList.add('active');
-                document.getElementById('welcomeMsg').innerText = `Active Account: ${currentEmail}`;
-            } else {
-                alert("Invalid or expired verification code!");
-            }
-        }
-
-        async function submitReport() {
-            const target = document.getElementById('targetUser').value;
-            const reason = document.getElementById('reportReason').value;
-
-            if(!target || !reason) { alert("Target and detailed explanation are required!"); return; }
-
-            const res = await fetch('/api/report-user', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reporter: currentEmail, target: target, reason: reason })
-            });
-
-            if(res.ok) {
-                alert("Detailed Report logged into Cloud Database & sent to Admin!");
-                closeModal('reportModal');
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+                signupPanel.classList.add('active');
+                loginPanel.classList.remove('active');
             }
         }
     </script>
