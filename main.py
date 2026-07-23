@@ -43,20 +43,23 @@ def send_otp():
     db = get_pantry_db()
     existing_user = next((u for u in db["users"] if u.get("email") == email), None)
 
+    # Prevent Duplicate Registration with Same Email
+    if mode == 'signup' and existing_user:
+        return jsonify({"message": "Email already registered! Please switch to Existing Login tab."}), 400
+
     if mode == 'login' and not existing_user:
         return jsonify({"message": "Email not found. Please register first."}), 400
 
     otp = str(random.randint(100000, 999999))
     session_data[email] = {"otp": otp, "temp_info": data}
 
-    # High Professional HTML Template for Resend Email OTP
     if RESEND_API_KEY:
         try:
             headers = {"Authorization": f"Bearer {RESEND_API_KEY}", "Content-Type": "application/json"}
             html_content = f"""
             <div style="background-color: #020617; padding: 35px 20px; font-family: sans-serif; color: #f8fafc; text-align: center;">
                 <div style="max-width: 450px; margin: 0 auto; background: #0f172a; border-radius: 16px; padding: 30px; border: 1px solid #1e293b;">
-                    <h1 style="color: #38bdf8; font-size: 24px; margin-bottom: 8px;">HackyNetworksStudio</h1>
+                    <h1 style="color: #38bdf8; font-size: 20px; font-weight: bold; margin-bottom: 8px; white-space: nowrap;">HackyNetworksStudio</h1>
                     <p style="color: #94a3b8; font-size: 13px;">Security Code Verification</p>
                     <div style="margin: 25px 0; background: #1e293b; padding: 18px; border-radius: 12px; border: 1px dashed #38bdf8;">
                         <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #38bdf8;">{otp}</span>
@@ -100,7 +103,6 @@ def verify_otp():
             db["users"].append(user)
             sync_pantry(db)
 
-        # Send Telegram Admin Alert
         if ADMIN_CHAT_ID:
             msg = f"🟢 *ACCOUNT AUTHORIZED*\n\n👤 *Name:* {user['name']}\n📧 *Email:* `{user['email']}`\n✈️ *Telegram:* {user['tg_user']}\n🎭 *Role:* {user['role']}\n🛠️ *Skills:* {user['skills']}"
             try: requests.post(TG_URL, json={"chat_id": ADMIN_CHAT_ID, "text": msg, "parse_mode": "Markdown"})
@@ -119,11 +121,9 @@ def report_user():
 
     db = get_pantry_db()
     
-    # 1. Register Report directly into Cloud Storage (Pantry)
     report_entry = {"reporter": reporter, "target": target, "reason": reason}
     db["reports"].append(report_entry)
 
-    # 2. Increment Target User Report Counter
     target_user = next((u for u in db["users"] if u.get("email") == target or u.get("name") == target), None)
     rep_count = 1
     if target_user:
@@ -134,7 +134,6 @@ def report_user():
 
     sync_pantry(db)
 
-    # 3. Direct Message Alert to Telegram Admin
     if ADMIN_CHAT_ID:
         tg_msg = (
             f"🚨 *DETAILED FRAUD INCIDENT REPORT*\n\n"
@@ -158,12 +157,12 @@ def webhook():
     if "message" in data and "text" in data["message"]:
         chat_id = data["message"]["chat"]["id"]
         text = data["message"]["text"]
-        ADMIN_CHAT_ID = chat_id  # Automatically registers Admin Chat ID
+        ADMIN_CHAT_ID = chat_id
 
         if text.startswith("/start"):
             payload = {
                 "chat_id": chat_id,
-                "text": "👋 *HackyNetworksStudio Command Center*\n\nAdmin session initialized. Launch marketplace or check status.",
+                "text": "👋 *HackyNetworksStudio Command Center*\n\nAdmin session initialized.",
                 "parse_mode": "Markdown",
                 "reply_markup": {
                     "inline_keyboard": [
@@ -173,22 +172,6 @@ def webhook():
                 }
             }
             requests.post(TG_URL, json=payload)
-
-        elif text.startswith("/view_pantry"):
-            db = get_pantry_db()
-            users = db.get("users", [])
-            reports = db.get("reports", [])
-
-            msg = "📋 *HackyNetworksStudio Master Database*\n\n"
-            msg += f"👥 *Users Count:* {len(users)}\n"
-            for u in users:
-                msg += f"• {u.get('name')} | `{u.get('email')}` | TG: {u.get('tg_user')} | [{u.get('role')}] (Reports: {u.get('report_count')}/5)\n"
-            
-            msg += f"\n🚨 *Logged Reports Count:* {len(reports)}\n"
-            for r in reports:
-                msg += f"• Target: `{r.get('target')}` | Details: \"{r.get('reason')}\"\n"
-
-            requests.post(TG_URL, json={"chat_id": chat_id, "text": msg, "parse_mode": "Markdown"})
 
     return "OK", 200
 
