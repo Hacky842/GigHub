@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GigHub - Find Your Match</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+
+        /* Top Navigation Bar */
+        header {
+            background-color: #031525;
+            color: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo-box {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f59e0b, #06b6d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .logo-text { font-size: 20px; font-weight: 800; }
+
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 11px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-link.active { color: #38bdf8; }
+        .nav-link i { width: 20px; height: 20px; margin-bottom: 2px; }
+
+        .points-badge {
+            background: #023a48;
+            border: 1px solid #087ea4;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 14px;
+        }
+
+        /* Search Input */
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            width: 18px;
+            height: 18px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Category / Role Toggle Bar */
+        .subtitle {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .toggle-container {
+            display: flex;
+            background: #0d7685;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .toggle-btn.active {
+            background: #ffffff;
+            color: #0d7685;
+        }
+
+        /* Skill Pill List */
+        .skills-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            scrollbar-width: none;
+        }
+
+        .skills-scroll::-webkit-scrollbar { display: none; }
+
+        .pill {
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .pill.active {
+            background: #0d7685;
+            color: #ffffff;
+            border-color: #0d7685;
+        }
+
+        /* Freelancer Profile Cards */
+        .card-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .user-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-left { display: flex; gap: 14px; }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .avatar-sj { background: #dcfce7; color: #166534; }
+        .avatar-dl { background: #dbeafe; color: #1e40af; }
+        .avatar-er { background: #ffe4e6; color: #9f1239; }
+
+        .info h3 { font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
+        .info .role-tag { font-size: 13px; color: #64748b; margin-bottom: 8px; }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #334155;
+            margin-bottom: 4px;
+        }
+
+        .detail-item i { width: 14px; height: 14px; color: #64748b; }
+        .location { color: #0d7685; font-weight: 600; }
+
+        .card-right {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .btn-discuss {
+            background: #0d7685;
+            color: #ffffff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .badge-gp {
+            background: #ffffff;
+            border: 1px solid #0d7685;
+            color: #0d7685;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="/" class="brand">
+            <div class="logo-box">G</div>
+            <span class="logo-text">GigHub</span>
+        </a>
+
+        <div class="nav-items">
+            <div class="nav-link active">
+                <i data-lucide="home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-link">
+                <i data-lucide="message-square"></i>
+                <span>Messages</span>
+            </div>
+            <div class="nav-link">
+                <i data-lucide="heart"></i>
+                <span>Saved</span>
+            </div>
+            <a href="/logout" class="nav-link">
+                <i data-lucide="user"></i>
+                <span>Account</span>
+            </a>
+            <div class="points-badge">
+                <i data-lucide="coins" style="width:14px; height:14px;"></i>
+                GigPoints: 0
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <h2 class="section-title">Find Your Match</h2>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Search Freelancers, Clients...">
+        </div>
+
+        <div class="subtitle">Your Need</div>
+
+        <!-- Role Toggle Buttons -->
+        <div class="toggle-container">
+            <button class="toggle-btn active">Freelancer</button>
+            <button class="toggle-btn">Client</button>
+        </div>
+
+        <!-- Skills Filter Pills -->
+        <div class="skills-scroll">
+            <div class="pill active">Designers</div>
+            <div class="pill">Developers</div>
+            <div class="pill">Writers</div>
+            <div class="pill">Marketers</div>
+            <div class="pill">Videographers</div>
+            <div class="pill">Consultants</div>
+        </div>
+
+        <div class="subtitle" style="margin-bottom: 14px;">Suggestions for You</div>
+
+        <!-- User Cards Grid -->
+        <div class="card-list">
+
+            <!-- Card 1 -->
+            <div class="user-card">
+                <div class="card-left">
+                    <div class="avatar avatar-sj">SJ</div>
+                    <div class="info">
+                        <h3>Sarah J.</h3>
+                        <div class="role-tag">Role: Freelancer</div>
+                        <div class="detail-item"><i data-lucide="briefcase"></i> Skills: Graphic Design</div>
+                        <div class="detail-item"><i data-lucide="send"></i> Telegram ID: @sarah_designz</div>
+                        <div class="detail-item"><i data-lucide="file-text"></i> Reports: 0 / 5</div>
+                        <div class="detail-item"><i data-lucide="map-pin"></i> Location: <span class="location">Maharashtra</span></div>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <button class="btn-discuss" onclick="window.open('https://t.me/sarah_designz', '_blank')">Discuss</button>
+                    <div class="badge-gp">
+                        <i data-lucide="coins" style="width:12px; height:12px;"></i> GigPoints: 0
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="user-card">
+                <div class="card-left">
+                    <div class="avatar avatar-dl">DL</div>
+                    <div class="info">
+                        <h3>David L.</h3>
+                        <div class="role-tag">Role: Freelancer</div>
+                        <div class="detail-item"><i data-lucide="briefcase"></i> Skills: Full Stack Development</div>
+                        <div class="detail-item"><i data-lucide="send"></i> Telegram ID: @daviddev</div>
+                        <div class="detail-item"><i data-lucide="file-text"></i> Reports: 0 / 5</div>
+                        <div class="detail-item"><i data-lucide="map-pin"></i> Location: <span class="location">Karnataka</span></div>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <button class="btn-discuss" onclick="window.open('https://t.me/daviddev', '_blank')">Discuss</button>
+                    <div class="badge-gp">
+                        <i data-lucide="coins" style="width:12px; height:12px;"></i> GigPoints: 0
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="user-card">
+                <div class="card-left">
+                    <div class="avatar avatar-er">ER</div>
+                    <div class="info">
+                        <h3>Emily R.</h3>
+                        <div class="role-tag">Role: Freelancer</div>
+                        <div class="detail-item"><i data-lucide="briefcase"></i> Skills: Content Writing</div>
+                        <div class="detail-item"><i data-lucide="send"></i> Telegram ID: @emilywrites</div>
+                        <div class="detail-item"><i data-lucide="file-text"></i> Reports: 0 / 5</div>
+                        <div class="detail-item"><i data-lucide="map-pin"></i> Location: <span class="location">Uttar Pradesh</span></div>
+                    </div>
+                </div>
+                <div class="card-right">
+                    <button class="btn-discuss" onclick="window.open('https://t.me/emilywrites', '_blank')">Discuss</button>
+                    <div class="badge-gp">
+                        <i data-lucide="coins" style="width:12px; height:12px;"></i> GigPoints: 0
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
