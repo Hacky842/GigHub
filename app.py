@@ -1,17 +1,15 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import requests
 import random
-import json
 
 app = Flask(__name__)
-app.secret_key = 'gighub_pantry_secret_key'
+app.secret_key = 'gighub_production_super_secret_key'
 
-# Replace with your Pantry ID if you have one, or use a dynamic default
-PANTRY_ID = "YOUR_PANTRY_ID_HERE"  # e.g., 12345678-abcd-efgh-ijkl-1234567890ab
-PANTRY_BASE_URL = f"https://getpantry.cloud/apiv1/pantry/{PANTRY_ID}/basket/gighub_users"
+# Pantry Cloud Setup (Put your Pantry ID here if you have one)
+PANTRY_ID = "00000000-0000-0000-0000-000000000000"
+PANTRY_URL = f"https://getpantry.cloud/apiv1/pantry/{PANTRY_ID}/basket/gighub_users"
 
-# OTP Store in memory for demo verification
-otp_store = {}
+otp_memory = {}
 
 @app.route('/')
 def home():
@@ -21,99 +19,71 @@ def home():
 
 @app.route('/send-otp', methods=['POST'])
 def send_otp():
-    data = request.json
+    data = request.json or {}
     email = data.get('email')
     if not email:
-        return jsonify({'status': 'error', 'message': 'Email is required!'})
+        return jsonify({'status': 'error', 'message': 'Email ID daalna zaroori hai!'})
     
     otp = str(random.randint(100000, 999999))
-    otp_store[email] = otp
-    print(f"--- OTP Generated for {email}: {otp} ---")
-    return jsonify({'status': 'success', 'message': f'OTP sent successfully! (Demo OTP: {otp})'})
+    otp_memory[email] = otp
+    return jsonify({'status': 'success', 'message': f'Verification OTP: {otp}'})
 
 @app.route('/verify-otp', methods=['POST'])
 def verify_otp():
-    data = request.json
+    data = request.json or {}
     email = data.get('email')
     otp = data.get('otp')
-    
-    if otp_store.get(email) == str(otp):
-        return jsonify({'status': 'success', 'message': 'OTP Verified!'})
-    return jsonify({'status': 'error', 'message': 'Invalid Verification Code!'})
+    if otp_memory.get(email) == str(otp):
+        return jsonify({'status': 'success', 'message': 'OTP Verified Successfully!'})
+    return jsonify({'status': 'error', 'message': 'Galat OTP code!'})
 
 @app.route('/signup', methods=['POST'])
 def signup():
-    data = request.json
-    name = data.get('name')
+    data = request.json or {}
+    name = data.get('name', 'User')
     email = data.get('email')
     password = data.get('password')
-    role = data.get('role')
+    role = data.get('role', 'Freelancer')
     skills = data.get('skills', '')
-    telegram_id = data.get('telegram_id', '@user')
-    location = data.get('location', 'India')
 
-    user_payload = {
+    if not email or not password:
+        return jsonify({'status': 'error', 'message': 'Sabhi required fields bharein!'})
+
+    user_data = {
         'name': name,
         'email': email,
         'password': password,
         'role': role,
         'skills': skills,
-        'telegram_id': telegram_id,
-        'location': location,
-        'gigpoints': 0,
-        'reports': '0 / 5'
+        'gigpoints': 0
     }
 
-    # Save to Pantry Basket
+    # Save to Pantry Cloud Basket gracefully
     try:
-        # Fetch existing users from Pantry
-        response = requests.get(PANTRY_BASE_URL)
-        if response.status_code == 200:
-            pantry_data = response.json()
-        else:
-            pantry_data = {'users': []}
-
-        # Check if user already exists
-        users = pantry_data.get('users', [])
-        for u in users:
-            if u.get('email') == email:
-                return jsonify({'status': 'error', 'message': 'Email already exists in Pantry Database!'})
-
-        users.append(user_payload)
-        # Update Pantry Basket
-        requests.post(PANTRY_BASE_URL, json={'users': users})
+        requests.post(PANTRY_URL, json={'users': [user_data]}, timeout=3)
     except Exception as e:
-        print("Pantry DB Error/Fallback:", e)
+        print("Pantry DB warning:", e)
 
-    session['user'] = user_payload
-    return jsonify({'status': 'success', 'message': 'Account created and saved to Pantry!'})
+    session['user'] = user_data
+    return jsonify({'status': 'success', 'message': 'Account successfully registered!'})
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.json
+    data = request.json or {}
     email = data.get('email')
     password = data.get('password')
 
-    try:
-        res = requests.get(PANTRY_BASE_URL)
-        if res.status_code == 200:
-            users = res.json().get('users', [])
-            for u in users:
-                if u.get('email') == email and u.get('password') == password:
-                    session['user'] = u
-                    return jsonify({'status': 'success', 'message': 'Login successful!'})
-    except Exception as e:
-        print("Pantry Login Check Error:", e)
+    if not email or not password:
+        return jsonify({'status': 'error', 'message': 'Email aur Password enter karein!'})
 
-    # Fallback/Demo Login
-    user_payload = {
+    # Direct session login
+    session['user'] = {
         'name': email.split('@')[0].capitalize(),
         'email': email,
         'role': 'Freelancer',
         'gigpoints': 0
     }
-    session['user'] = user_payload
-    return jsonify({'status': 'success', 'message': 'Logged in successfully!'})
+    return jsonify({'status': 'success', 'message': 'Login successful!'})
 
 @app.route('/dashboard')
 def dashboard():

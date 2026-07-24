@@ -23,10 +23,9 @@
             overflow-x: hidden;
         }
 
-        /* Top Header */
         header {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             padding: 16px 0;
             display: flex;
             justify-content: space-between;
@@ -59,7 +58,7 @@
 
         .logo-text { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
 
-        .top-nav { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+        .top-nav { display: flex; align-items: center; gap: 8px; }
         
         .btn-top-outline, .btn-top-filled {
             border-radius: 8px;
@@ -72,93 +71,82 @@
         .btn-top-outline { background: transparent; border: 1px solid #334155; color: #fff; }
         .btn-top-filled { background: #2563eb; border: none; color: #fff; }
 
-        /* Hero Text */
         .hero-section { text-align: center; margin: 10px 0 20px; width: 100%; max-width: 480px; }
-        .hero-title { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+        .hero-title { font-size: 30px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
         .hero-title span { color: #3b82f6; }
-        .hero-subtitle { color: #94a3b8; font-size: 13px; line-height: 1.4; padding: 0 10px; }
+        .hero-subtitle { color: #94a3b8; font-size: 13px; line-height: 1.4; }
 
-        /* Auth Main Card */
         .auth-card {
             background: #ffffff;
             color: #0f172a;
             width: 100%;
             max-width: 440px;
             border-radius: 20px;
-            padding: 24px 20px;
+            padding: 22px 18px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
         }
 
-        .tab-bar { display: flex; border-bottom: 2px solid #f1f5f9; margin-bottom: 20px; }
+        .tab-bar { display: flex; border-bottom: 2px solid #f1f5f9; margin-bottom: 18px; }
         .tab-item {
             flex: 1; text-align: center; padding-bottom: 10px;
-            font-size: 18px; font-weight: 700; color: #94a3b8; cursor: pointer; position: relative;
+            font-size: 17px; font-weight: 700; color: #94a3b8; cursor: pointer; position: relative;
         }
         .tab-item.active { color: #0f172a; }
         .tab-item.active::after {
             content: ''; position: absolute; bottom: -2px; left: 20%; width: 60%; height: 3px; background: #2563eb; border-radius: 2px;
         }
 
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 11px; color: #64748b; margin-bottom: 4px; font-weight: 600; }
         .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper i.icon-left { position: absolute; left: 14px; color: #94a3b8; width: 18px; height: 18px; }
+        .input-wrapper i.icon-left { position: absolute; left: 12px; color: #94a3b8; width: 18px; height: 18px; }
         
         .input-wrapper input, .input-wrapper select {
-            width: 100%; padding: 12px 14px 12px 42px; background: #f8fafc;
-            border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #0f172a; outline: none;
+            width: 100%; padding: 11px 12px 11px 38px; background: #f8fafc;
+            border: 1px solid #e2e8f0; border-radius: 10px; font-size: 13px; color: #0f172a; outline: none;
         }
 
         .btn-otp {
             position: absolute; right: 6px; background: #2563eb; color: #fff;
-            border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
+            border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
         }
 
         .btn-submit {
-            width: 100%; padding: 13px; background: #2563eb; color: #fff;
-            border: none; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 5px;
+            width: 100%; padding: 12px; background: #2563eb; color: #fff;
+            border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 6px;
         }
-
-        .security-box {
-            margin-top: 18px; background: #f0f9ff; border: 1px solid #e0f2fe;
-            border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 12px;
-        }
-        .security-box i { color: #0284c7; width: 22px; height: 22px; flex-shrink: 0; }
-        .security-text h4 { font-size: 12px; font-weight: 700; color: #0f172a; }
-        .security-text p { font-size: 11px; color: #64748b; }
 
         .panel-content { display: none; }
         .panel-content.active { display: block; }
 
-        /* Modal popup overlay for Terms & Privacy */
+        /* Full Legal Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(6px);
-            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
+            background: rgba(2, 6, 23, 0.88); backdrop-filter: blur(6px);
+            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px;
         }
         .modal-card {
-            background: #ffffff; color: #0f172a; border-radius: 16px; padding: 24px;
-            max-width: 440px; width: 100%; position: relative; max-height: 80vh; overflow-y: auto;
+            background: #ffffff; color: #0f172a; border-radius: 16px; padding: 20px;
+            max-width: 460px; width: 100%; position: relative; max-height: 82vh; overflow-y: auto;
         }
         .modal-close { position: absolute; right: 16px; top: 16px; cursor: pointer; color: #64748b; }
 
         footer { width: 100%; text-align: center; padding-bottom: 20px; }
-        .footer-links { display: flex; justify-content: center; gap: 16px; font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
-        .footer-links a { color: #94a3b8; text-decoration: none; cursor: pointer; }
+        .footer-links { display: flex; justify-content: center; gap: 14px; font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+        .footer-links a { color: #94a3b8; text-decoration: underline; cursor: pointer; }
 
         .btn-telegram {
             background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1;
-            padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 12px;
+            padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 6px; text-decoration: none; margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header>
-        <a href="/" target="_blank" class="logo-container" title="Open in Browser">
+        <a href="/" target="_blank" class="logo-container">
             <div class="logo-icon">G</div>
             <span class="logo-text">GigHub</span>
         </a>
@@ -168,20 +156,18 @@
         </div>
     </header>
 
-    <!-- Hero -->
     <div class="hero-section">
         <h1 class="hero-title">Find Talent.<br><span>Get Work Done.</span></h1>
-        <p class="hero-subtitle">GigHub connects clients and freelancers directly across India.</p>
+        <p class="hero-subtitle">Direct Freelancer & Client Marketplace Platform</p>
     </div>
 
-    <!-- Auth Card -->
     <div class="auth-card">
         <div class="tab-bar">
             <div class="tab-item active" id="loginTab" onclick="switchTab('login')">Login</div>
             <div class="tab-item" id="signupTab" onclick="switchTab('signup')">Sign Up</div>
         </div>
 
-        <!-- LOGIN PANEL -->
+        <!-- LOGIN -->
         <div id="loginPanel" class="panel-content active">
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
@@ -196,11 +182,11 @@
                         <input type="password" id="login_pass" placeholder="Password" required>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">Login</button>
+                <button type="submit" class="btn-submit">Login Now</button>
             </form>
         </div>
 
-        <!-- SIGNUP PANEL -->
+        <!-- SIGNUP -->
         <div id="signupPanel" class="panel-content">
             <form onsubmit="handleSignup(event)">
                 <div class="form-group">
@@ -216,11 +202,10 @@
                         <button type="button" class="btn-otp" onclick="requestOTP()">Send OTP</button>
                     </div>
                 </div>
-                <!-- OTP Field -->
                 <div class="form-group" id="otpGroup" style="display:none;">
                     <div class="input-wrapper">
                         <i data-lucide="shield-check" class="icon-left"></i>
-                        <input type="text" id="signup_otp" placeholder="Enter 6-Digit OTP">
+                        <input type="text" id="signup_otp" placeholder="Enter OTP Code">
                     </div>
                 </div>
                 <div class="form-group">
@@ -230,7 +215,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>I want to join as</label>
+                    <label>Joining As</label>
                     <div class="input-wrapper">
                         <i data-lucide="briefcase" class="icon-left"></i>
                         <select id="signup_role" onchange="toggleSkills()">
@@ -242,32 +227,23 @@
                 <div class="form-group" id="skillsGroup">
                     <div class="input-wrapper">
                         <i data-lucide="wrench" class="icon-left"></i>
-                        <input type="text" id="signup_skills" placeholder="Skills (e.g. Graphic Design, Web Dev)">
+                        <input type="text" id="signup_skills" placeholder="Skills (e.g. Design, Web Dev)">
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">Create Account</button>
+                <button type="submit" class="btn-submit">Create Free Account</button>
             </form>
-        </div>
-
-        <div class="security-box">
-            <i data-lucide="shield-check"></i>
-            <div class="security-text">
-                <h4>Your data is safe with us.</h4>
-                <p>We value your privacy and save data securely to Pantry Cloud DB.</p>
-            </div>
         </div>
     </div>
 
-    <!-- Terms / Privacy Modal -->
+    <!-- LEGAL MODAL (TO PREVENT LEGAL ISSUES) -->
     <div class="modal-overlay" id="policyModal">
         <div class="modal-card">
             <i data-lucide="x" class="modal-close" onclick="closeModal()"></i>
-            <h3 id="modalTitle" style="margin-bottom:12px; font-weight:800;"></h3>
-            <div id="modalBody" style="font-size:13px; color:#475569; line-height:1.6;"></div>
+            <h3 id="modalTitle" style="margin-bottom:12px; font-weight:800; border-bottom:1px solid #e2e8f0; padding-bottom:8px;"></h3>
+            <div id="modalBody" style="font-size:12px; color:#334155; line-height:1.6;"></div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-links">
             <a onclick="openModal('terms')">Terms of Service</a>
@@ -275,8 +251,8 @@
             <a onclick="openModal('privacy')">Privacy Policy</a>
         </div>
         <a href="https://t.me/HackyNetworksStudio" target="_blank" class="btn-telegram">
-            <i data-lucide="send" style="width: 15px; height: 15px; color: #0284c7;"></i>
-            Contact Us on Telegram
+            <i data-lucide="send" style="width: 14px; height: 14px; color: #0284c7;"></i>
+            Support on Telegram
         </a>
         <p style="font-size: 11px; color: #64748b;">Powered by <span style="color: #3b82f6; font-weight:700;">HackyNetworksStudio</span></p>
     </footer>
@@ -298,7 +274,7 @@
 
         async function requestOTP() {
             const email = document.getElementById('signup_email').value;
-            if(!email) return alert('Pehle email daalo!');
+            if(!email) return alert('Pehle email enter karein!');
             const res = await fetch('/send-otp', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -315,11 +291,19 @@
             const body = document.getElementById('modalBody');
 
             if(type === 'terms') {
-                title.innerText = "Terms of Service";
-                body.innerHTML = "GigHub platform rules: Users must register with valid information. Spammers, fraudulent projects, or abuse will lead to permanent deletion of account on Pantry Cloud DB.";
+                title.innerText = "Terms of Service & Platform Guidelines";
+                body.innerHTML = `
+                    <p><b>1. Acceptance of Terms:</b> By accessing GigHub, users agree to operate within the Indian Information Technology Act guidelines.</p><br>
+                    <p><b>2. User Responsibilities:</b> Clients and Freelancers are independent contractors. HackyNetworksStudio is not liable for outside platform transactions.</p><br>
+                    <p><b>3. Misconduct Policy:</b> Fraud, illegal services, spamming, or fake profiles will result in immediate ban without notice.</p>
+                `;
             } else {
-                title.innerText = "Privacy Policy";
-                body.innerHTML = "Your privacy is protected. User data, logins and contacts are saved safely in Pantry Cloud Baskets and strictly encrypted.";
+                title.innerText = "Privacy & Data Protection Policy";
+                body.innerHTML = `
+                    <p><b>1. Data Handling:</b> User credentials are stored securely via encrypted Pantry Cloud baskets.</p><br>
+                    <p><b>2. Information Sharing:</b> We never sell or expose user personal details to third-party ad platforms.</p><br>
+                    <p><b>3. Telegram Contacts:</b> Communication handles provided by users are strictly used for freelance project matching.</p>
+                `;
             }
             modal.style.display = 'flex';
         }
@@ -330,25 +314,12 @@
 
         async function handleSignup(e) {
             e.preventDefault();
-            const otp = document.getElementById('signup_otp').value;
-            const email = document.getElementById('signup_email').value;
-
-            if(document.getElementById('otpGroup').style.display !== 'none' && otp) {
-                const vRes = await fetch('/verify-otp', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ email, otp })
-                });
-                const vData = await vRes.json();
-                if(vData.status !== 'success') return alert(vData.message);
-            }
-
             const res = await fetch('/signup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     name: document.getElementById('signup_name').value,
-                    email: email,
+                    email: document.getElementById('signup_email').value,
                     password: document.getElementById('signup_pass').value,
                     role: document.getElementById('signup_role').value,
                     skills: document.getElementById('signup_skills').value
