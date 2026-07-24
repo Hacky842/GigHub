@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GigHub - Find Talent. Get Work Done.</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -20,12 +20,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 16px;
+            overflow-x: hidden;
         }
 
+        /* Top Header */
         header {
             width: 100%;
-            max-width: 1200px;
-            padding: 20px 0;
+            max-width: 500px;
+            padding: 16px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -34,15 +36,14 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 12px;
-            cursor: pointer;
+            gap: 10px;
             text-decoration: none;
             color: inherit;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             background: linear-gradient(135deg, #2563eb, #06b6d4);
             border-radius: 12px;
             display: flex;
@@ -51,36 +52,33 @@
             font-family: 'Cinzel', serif;
             font-weight: 800;
             color: #fff;
-            font-size: 26px;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.2s;
         }
 
-        .logo-container:hover .logo-icon { transform: scale(1.05); }
+        .logo-text { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
 
-        .logo-text { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-
-        .top-nav { display: flex; align-items: center; gap: 16px; font-size: 14px; }
-        .top-nav a { color: #94a3b8; text-decoration: none; cursor: pointer; }
-        .top-nav a:hover { color: #fff; }
-
+        .top-nav { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+        
         .btn-top-outline, .btn-top-filled {
             border-radius: 8px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 7px 14px;
         }
 
         .btn-top-outline { background: transparent; border: 1px solid #334155; color: #fff; }
         .btn-top-filled { background: #2563eb; border: none; color: #fff; }
 
-        .hero-section { text-align: center; margin: 15px 0 25px; max-width: 600px; }
-        .hero-title { font-size: 34px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+        /* Hero Text */
+        .hero-section { text-align: center; margin: 10px 0 20px; width: 100%; max-width: 480px; }
+        .hero-title { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
         .hero-title span { color: #3b82f6; }
-        .hero-subtitle { color: #94a3b8; font-size: 14px; margin: 0 auto 20px; line-height: 1.5; }
+        .hero-subtitle { color: #94a3b8; font-size: 13px; line-height: 1.4; padding: 0 10px; }
 
+        /* Auth Main Card */
         .auth-card {
             background: #ffffff;
             color: #0f172a;
@@ -89,7 +87,7 @@
             border-radius: 20px;
             padding: 24px 20px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .tab-bar { display: flex; border-bottom: 2px solid #f1f5f9; margin-bottom: 20px; }
@@ -106,11 +104,15 @@
         .form-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
         .input-wrapper { position: relative; display: flex; align-items: center; }
         .input-wrapper i.icon-left { position: absolute; left: 14px; color: #94a3b8; width: 18px; height: 18px; }
-        .input-wrapper i.icon-right { position: absolute; right: 14px; color: #94a3b8; width: 18px; height: 18px; cursor: pointer; }
         
         .input-wrapper input, .input-wrapper select {
             width: 100%; padding: 12px 14px 12px 42px; background: #f8fafc;
             border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #0f172a; outline: none;
+        }
+
+        .btn-otp {
+            position: absolute; right: 6px; background: #2563eb; color: #fff;
+            border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
         }
 
         .btn-submit {
@@ -119,36 +121,36 @@
         }
 
         .security-box {
-            margin-top: 20px; background: #f0f9ff; border: 1px solid #e0f2fe;
+            margin-top: 18px; background: #f0f9ff; border: 1px solid #e0f2fe;
             border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 12px;
         }
-        .security-box i { color: #0284c7; width: 22px; height: 22px; }
+        .security-box i { color: #0284c7; width: 22px; height: 22px; flex-shrink: 0; }
         .security-text h4 { font-size: 12px; font-weight: 700; color: #0f172a; }
         .security-text p { font-size: 11px; color: #64748b; }
 
         .panel-content { display: none; }
         .panel-content.active { display: block; }
 
-        /* Modal styling for Terms / Privacy */
+        /* Modal popup overlay for Terms & Privacy */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px);
+            background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(6px);
             display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
         }
         .modal-card {
             background: #ffffff; color: #0f172a; border-radius: 16px; padding: 24px;
-            max-width: 500px; width: 100%; position: relative; max-height: 80vh; overflow-y: auto;
+            max-width: 440px; width: 100%; position: relative; max-height: 80vh; overflow-y: auto;
         }
         .modal-close { position: absolute; right: 16px; top: 16px; cursor: pointer; color: #64748b; }
 
         footer { width: 100%; text-align: center; padding-bottom: 20px; }
-        .footer-links { display: flex; justify-content: center; gap: 16px; font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
+        .footer-links { display: flex; justify-content: center; gap: 16px; font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
         .footer-links a { color: #94a3b8; text-decoration: none; cursor: pointer; }
 
         .btn-telegram {
             background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1;
             padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 14px;
+            display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 12px;
         }
     </style>
 </head>
@@ -156,14 +158,11 @@
 
     <!-- Header -->
     <header>
-        <!-- Stylish Logo with direct browser click route -->
-        <a href="/" target="_blank" class="logo-container" title="Open GigHub in New Tab">
+        <a href="/" target="_blank" class="logo-container" title="Open in Browser">
             <div class="logo-icon">G</div>
             <span class="logo-text">GigHub</span>
         </a>
         <div class="top-nav">
-            <a onclick="openModal('terms')">Terms of Service</a>
-            <a onclick="openModal('privacy')">Privacy Policy</a>
             <button class="btn-top-outline" onclick="switchTab('login')">Login</button>
             <button class="btn-top-filled" onclick="switchTab('signup')">Sign Up</button>
         </div>
@@ -172,7 +171,7 @@
     <!-- Hero -->
     <div class="hero-section">
         <h1 class="hero-title">Find Talent.<br><span>Get Work Done.</span></h1>
-        <p class="hero-subtitle">GigHub connects clients and freelancers directly. Post your requirements or offer your skills.</p>
+        <p class="hero-subtitle">GigHub connects clients and freelancers directly across India.</p>
     </div>
 
     <!-- Auth Card -->
@@ -182,7 +181,7 @@
             <div class="tab-item" id="signupTab" onclick="switchTab('signup')">Sign Up</div>
         </div>
 
-        <!-- LOGIN -->
+        <!-- LOGIN PANEL -->
         <div id="loginPanel" class="panel-content active">
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
@@ -201,7 +200,7 @@
             </form>
         </div>
 
-        <!-- SIGNUP -->
+        <!-- SIGNUP PANEL -->
         <div id="signupPanel" class="panel-content">
             <form onsubmit="handleSignup(event)">
                 <div class="form-group">
@@ -214,6 +213,14 @@
                     <div class="input-wrapper">
                         <i data-lucide="mail" class="icon-left"></i>
                         <input type="email" id="signup_email" placeholder="Email Address" required>
+                        <button type="button" class="btn-otp" onclick="requestOTP()">Send OTP</button>
+                    </div>
+                </div>
+                <!-- OTP Field -->
+                <div class="form-group" id="otpGroup" style="display:none;">
+                    <div class="input-wrapper">
+                        <i data-lucide="shield-check" class="icon-left"></i>
+                        <input type="text" id="signup_otp" placeholder="Enter 6-Digit OTP">
                     </div>
                 </div>
                 <div class="form-group">
@@ -235,7 +242,7 @@
                 <div class="form-group" id="skillsGroup">
                     <div class="input-wrapper">
                         <i data-lucide="wrench" class="icon-left"></i>
-                        <input type="text" id="signup_skills" placeholder="Skills (e.g. Web Dev, Editing)">
+                        <input type="text" id="signup_skills" placeholder="Skills (e.g. Graphic Design, Web Dev)">
                     </div>
                 </div>
                 <button type="submit" class="btn-submit">Create Account</button>
@@ -246,17 +253,17 @@
             <i data-lucide="shield-check"></i>
             <div class="security-text">
                 <h4>Your data is safe with us.</h4>
-                <p>We value your privacy and ensure a secure experience on GigHub.</p>
+                <p>We value your privacy and save data securely to Pantry Cloud DB.</p>
             </div>
         </div>
     </div>
 
-    <!-- Policy Modal -->
+    <!-- Terms / Privacy Modal -->
     <div class="modal-overlay" id="policyModal">
         <div class="modal-card">
             <i data-lucide="x" class="modal-close" onclick="closeModal()"></i>
-            <h2 id="modalTitle" style="margin-bottom:12px;"></h2>
-            <div id="modalBody" style="font-size:14px; color:#475569; line-height:1.6;"></div>
+            <h3 id="modalTitle" style="margin-bottom:12px; font-weight:800;"></h3>
+            <div id="modalBody" style="font-size:13px; color:#475569; line-height:1.6;"></div>
         </div>
     </div>
 
@@ -268,10 +275,10 @@
             <a onclick="openModal('privacy')">Privacy Policy</a>
         </div>
         <a href="https://t.me/HackyNetworksStudio" target="_blank" class="btn-telegram">
-            <i data-lucide="send" style="width: 16px; height: 16px; color: #0284c7;"></i>
+            <i data-lucide="send" style="width: 15px; height: 15px; color: #0284c7;"></i>
             Contact Us on Telegram
         </a>
-        <p style="font-size: 12px; color: #64748b;">Powered by <span style="color: #3b82f6; font-weight:700;">HackyNetworksStudio</span></p>
+        <p style="font-size: 11px; color: #64748b;">Powered by <span style="color: #3b82f6; font-weight:700;">HackyNetworksStudio</span></p>
     </footer>
 
     <script>
@@ -289,6 +296,19 @@
             document.getElementById('skillsGroup').style.display = (role === 'Client') ? 'none' : 'block';
         }
 
+        async function requestOTP() {
+            const email = document.getElementById('signup_email').value;
+            if(!email) return alert('Pehle email daalo!');
+            const res = await fetch('/send-otp', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            alert(data.message);
+            document.getElementById('otpGroup').style.display = 'block';
+        }
+
         function openModal(type) {
             const modal = document.getElementById('policyModal');
             const title = document.getElementById('modalTitle');
@@ -296,10 +316,10 @@
 
             if(type === 'terms') {
                 title.innerText = "Terms of Service";
-                body.innerHTML = "Welcome to GigHub! By using our platform, you agree to comply with our rules. Users must provide valid data, interact professionally, and strictly avoid spam or illegal activity. HackyNetworksStudio reserves rights to protect client & freelancer privacy.";
+                body.innerHTML = "GigHub platform rules: Users must register with valid information. Spammers, fraudulent projects, or abuse will lead to permanent deletion of account on Pantry Cloud DB.";
             } else {
                 title.innerText = "Privacy Policy";
-                body.innerHTML = "Your privacy is our highest priority. We store user credentials in encrypted sessions and never share your confidential details with third parties. All transaction logs and communication adhere to standard Indian cybersecurity guidelines.";
+                body.innerHTML = "Your privacy is protected. User data, logins and contacts are saved safely in Pantry Cloud Baskets and strictly encrypted.";
             }
             modal.style.display = 'flex';
         }
@@ -310,12 +330,25 @@
 
         async function handleSignup(e) {
             e.preventDefault();
+            const otp = document.getElementById('signup_otp').value;
+            const email = document.getElementById('signup_email').value;
+
+            if(document.getElementById('otpGroup').style.display !== 'none' && otp) {
+                const vRes = await fetch('/verify-otp', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email, otp })
+                });
+                const vData = await vRes.json();
+                if(vData.status !== 'success') return alert(vData.message);
+            }
+
             const res = await fetch('/signup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     name: document.getElementById('signup_name').value,
-                    email: document.getElementById('signup_email').value,
+                    email: email,
                     password: document.getElementById('signup_pass').value,
                     role: document.getElementById('signup_role').value,
                     skills: document.getElementById('signup_skills').value
